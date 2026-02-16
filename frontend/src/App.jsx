@@ -1,12 +1,18 @@
+// <COMPONENT IMPORT>
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
-import Requests from "./pages/Requests";
+import Notification from "./pages/Notification";
 import Connection from "./components/Connection";
 import Broadcast from "./components/Broadcast";
 import Unauthorized from "./pages/Unauthorized";
-import {Routes, Route} from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AgentLiveTrack from "./pages/AgentLiveTrack";
+import CustomerTracking from "./pages/CustomerTracking";
+import Error404 from "./pages/Error404";
+// </COMPONENT IMPORT>
+
+import {Routes, Route} from "react-router-dom";
 import { setupInterceptors } from "./api";
 import { useAuth } from "./contexts/AuthContext";
 import { useEffect } from "react";
@@ -22,18 +28,29 @@ function App() {
         <Route path = "/register" element={<Register/>}/>
         <Route path = "/login" element={<Login/>}/>
         <Route path = "/" element={
-          <ProtectedRoute>
+          <ProtectedRoute allowedRoles={["customer", "agent"]}>
             <Home/>
           </ProtectedRoute>
         }/>
         <Route path = "/connection" element={<Connection/>}/>
-        <Route path = "/requests" element={
+        <Route path = "/notification" element={
           <ProtectedRoute>
-            <Requests/>
+            <Notification/>
           </ProtectedRoute>
           }/>
-        <Route path = "/broadcast" element={<Broadcast/>}/>
+        <Route path = "/agent-live" element={
+          <ProtectedRoute allowedRoles={["agent"]}>
+            <AgentLiveTrack/>
+          </ProtectedRoute>
+          }/>
+        <Route path = "/customer-live" element={
+          <ProtectedRoute allowedRoles={["customer"]}>
+            <CustomerTracking/>
+          </ProtectedRoute>
+          }/>
+        {/* <Route path = "/broadcast" element={<Broadcast/>}/> */}
         <Route path = "/unauthorized" element={<Unauthorized/>}/>
+        <Route path = "*" element={<Error404/>}/>
         
       </Routes>
     </>

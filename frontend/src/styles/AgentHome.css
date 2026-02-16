@@ -1,0 +1,82 @@
+/* pages/AgentHome.css */
+#root {
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: left !important;
+  width: 100%;
+  min-height: 100vh;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f8f9fc;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.agent-home-container {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.agent-app-container {
+  width: 100%;
+  max-width: 1000px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(to bottom, #000080 50%, #ffffff 50%);
+  border: transparent;
+  border-radius: 20px;
+}
+
+.agent-main-content {
+  flex: 1;
+  width: 100%;
+  padding: 20px 16px;
+}
+
+.agnet-content-wrapper {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+.go-online-btn {
+  padding: 16px 48px;
+  background-color: rgba(255, 94, 0, 0.944);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 128, 0.3);
+  letter-spacing: 0.5px;
+  margin-top: 100px; /* Adjust to position in middle */
+}
+
+.go-online-btn:hover {
+  background-color: rgba(216, 83, 5, 0.944);
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(216, 83, 5, 0.944);
+}
+
+.go-online-btn:active {
+  transform: scale(0.95);
+}

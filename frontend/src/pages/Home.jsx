@@ -1,20 +1,12 @@
-import { useState } from "react";
+import UserHome from "../components/UserHome";
+import AgentHome from "../components/AgentHome";
 import { useAuth } from "../contexts/AuthContext";
-import Parcel from "../components/Parcel";
 function Home(){
-    const {logout} = useAuth(); 
-    const [create,setCreate] = useState(false);
-    const handleClick = (e) =>{
-        e.preventDefault();
-        setCreate(true);
+    const {role} = useAuth();
+    if (role === 'customer'){
+        return <UserHome/>
     }
-    return(
-        <>
-            This is home page
-            <button onClick={handleClick}>Create Parcel</button><br/>
-            {create ? <Parcel setCreate = {setCreate}/> : "" }
-            <br/><button type="button" onClick={logout}>logout</button>
-        </>
-    );
+
+    return <AgentHome/>
 }
 export default Home;

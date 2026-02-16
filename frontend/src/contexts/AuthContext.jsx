@@ -12,7 +12,6 @@ export const useAuth = () => useContext(AuthContext);
 export function AuthProvider({children}){
     const [token,setToken] = useState(null);
     const [isAuthenticated,setIsAuthenticated] = useState(null);
-    //const [id,setId] = useState(null);
     const [role,setRole] = useState(null);
     const [user, setUser] = useState(null);
     const navigate = useNavigate();

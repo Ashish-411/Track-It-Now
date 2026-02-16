@@ -2,7 +2,9 @@ import { useState } from "react";
 import api from "../api";
 import { useRequest } from "../contexts/RequestContext";
 import { useAuth } from "../contexts/AuthContext";
-function Parcel({setCreate}){
+import { IoClose } from "react-icons/io5";
+import "../styles/Parcel.css";
+function Parcel({handleCloseModal}){
     const [description,setDescription] = useState("");
     const [email,setEmail] = useState("");
     const [loading, setLoading] = useState(false); 
@@ -30,41 +32,8 @@ function Parcel({setCreate}){
             console.log("request response", response);
             const request_data = response.data;
             setRequest(request_data);
-
-                    const ws = new WebSocket(
-                    `ws://localhost:8000/api/parcel/send_notification/${user.id}?token=${token}`
-            );
-
-            ws.onopen = () => {
-                console.log("WebSocket connected. Sending parcel notification...");
-
-                //Send notification message
-                
-                console.log("Request data",request_data);
-                ws.send(
-                JSON.stringify({
-                    request_id: request_data.id,
-                    receiver_id : request_data.receiver_id,
-                    sender_name: user.name,
-                })
-                );
-            };
-
-            ws.onmessage = (event) => {
-                const data = JSON.parse(event.data);
-                console.log("Message from server:", data);
-            };
-
-            ws.onerror = (err) => {
-                console.error("WebSocket error:", err);
-            };
-
-            ws.onclose = () => {
-                console.log("WebSocket closed after sending notification");
-            };
-
             alert("Parcel request sent successfully!");
-            setCreate(false); 
+            handleCloseModal(false); 
         }catch(err){
             console.log(err);
             setError(err.response?.data?.message || "Failed to send parcel");
@@ -73,22 +42,61 @@ function Parcel({setCreate}){
         }
     }
     return(
-        <>
-            <input type="text"
-            value={description}
-            onChange={(e)=> setDescription(e.target.value)} 
-            required
-            placeholder="description"/><br/>
-            <input type="email"
-            value={email}
-            onChange={(e)=> setEmail(e.target.value)} 
-            required
-            placeholder="receiver email"/><br/>
-            <button type="submit" disabled={loading}
-            onClick={handleSubmit}
-            >{loading? "Sending..." : "Create"}</button>
-            <button type="button" onClick={(e) => setCreate(false)}>Cancel</button>
-        </>
+        <div className="parcel-modal-overlay">
+            <div className="parcel-modal">
+                <div className="parcel-modal-header">
+                    <h2 className="parcel-modal-title">Create New Parcel</h2>
+                    <button className="parcel-close-btn" onClick={() => handleCloseModal(false)}>
+                        <IoClose size={24} />
+                    </button>
+                </div>
+
+                {error && <div className="parcel-error">{error}</div>}
+
+                <form onSubmit={handleSubmit} className="parcel-form">
+                    <div className="parcel-form-group">
+                        <label className="parcel-label">Description</label>
+                        <input
+                            type="text"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            required
+                            placeholder="Enter parcel description"
+                            className="parcel-input"
+                        />
+                    </div>
+
+                    <div className="parcel-form-group">
+                        <label className="parcel-label">Receiver Email</label>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                            placeholder="Receiver Email"
+                            className="parcel-input"
+                        />
+                    </div>
+
+                    <div className="parcel-modal-actions">
+                        <button
+                            type="button"
+                            className="parcel-btn parcel-btn-secondary"
+                            onClick={() => handleCloseModal(false)}
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="parcel-btn parcel-btn-primary"
+                        >
+                            {loading ? "Creating..." : "Create Parcel"}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     );
 }
 export default Parcel;

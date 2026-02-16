@@ -4,12 +4,15 @@ import App from './App.jsx'
 import {BrowserRouter} from "react-router-dom"
 import {AuthProvider} from './contexts/AuthContext.jsx'
 import { RequestProvider } from './contexts/RequestContext.jsx'
+import { NotificationProvider } from './contexts/NotificationContext.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter future={{ v7_startTransition: true }}>
       <AuthProvider>
         <RequestProvider> 
-          <App />
+          <NotificationProvider>
+            <App />
+          </NotificationProvider>
         </RequestProvider>
       </AuthProvider>
     </BrowserRouter>
