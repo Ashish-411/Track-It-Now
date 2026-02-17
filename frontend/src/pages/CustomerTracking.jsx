@@ -4,12 +4,11 @@ import { IoMdClose } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 
 function CustomerTracking() {
-  //const { parcelId } = useParams();
-  const parcelId = 1;
+  const {id} = useParams();
   const navigate = useNavigate();
 
   const handleClose = () => {
-    navigate("/");
+    navigate(-1);
   };
 
   return (
@@ -26,7 +25,7 @@ function CustomerTracking() {
         <div>
           <h2 style={{ margin: 0 }}>Request Pickup</h2>
           <p style={{ margin: "0.5rem 0 0 0" }}>
-            Parcel ID: {parcelId || "NEW"}
+            Parcel ID: {id || "NEW"}
           </p>
         </div>
 
@@ -46,7 +45,7 @@ function CustomerTracking() {
       </div>
 
       {/* Map Component */}
-      <CustomerMap parcelId={parcelId} />
+      <CustomerMap parcelId={id} />
     </div>
   );
 }

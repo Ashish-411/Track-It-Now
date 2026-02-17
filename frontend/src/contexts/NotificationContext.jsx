@@ -9,9 +9,20 @@ export const NotificationProvider = ({ children }) => {
   const { user, token } = useAuth();
   const socketRef = useRef(null);
   const [notifications, setNotification] = useState([]);
- const [senderNotifications, setSenderNotifications] = useState([]);
+ const [senderNotifications, setSenderNotifications] = useState(() =>{
+  try {
+        const stored = localStorage.getItem("senderNotifications");
+        return stored ? JSON.parse(stored) : [];
+    } catch {
+        return [];
+    }
+ });
  const [senderParcels, setSenderParcls] = useState([]);
  const [loading,setLoading] = useState(false);
+ const clearSenderNotifications = () => {
+    setSenderNotifications([]);
+    localStorage.removeItem("senderNotifications");
+};
 
  const fetchSenderParcel = useCallback(async() => {
     setLoading(true);
@@ -27,6 +38,10 @@ export const NotificationProvider = ({ children }) => {
     }
 }, []); // Empty deps since it doesn't depend on external values
 
+  //storing notification 
+useEffect(() => {
+    localStorage.setItem("senderNotifications", JSON.stringify(senderNotifications));
+}, [senderNotifications]);
 
   useEffect(() => {
     if (!user || !token) return;
@@ -36,7 +51,9 @@ export const NotificationProvider = ({ children }) => {
     socketRef.current = new WebSocket(
       `ws://localhost:8000/api/parcel/receive_notification/${user.id}?token=${token}`
     );
-
+    socketRef.current.open=() =>{
+      console.log("Notification WebSocket Connected");
+    }
     socketRef.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
       console.log("Received:", data);
@@ -46,11 +63,14 @@ export const NotificationProvider = ({ children }) => {
         setSenderNotifications(prev => [data, ...prev]); 
         fetchSenderParcel();                          
     }
+    else if(data.type === "parcel-assigned"){
+      alert(data.message);
+    }
 
     };
 
     socketRef.current.onclose = (e) => {
-      console.log("WebSocket closed",e);
+      console.log("Notification WebSocket closed",e);
     };
 
     return () => {
@@ -69,6 +89,7 @@ export const NotificationProvider = ({ children }) => {
                                         senderParcels,
                                         loading,
                                         removeNotification,
+                                        clearSenderNotifications,
                                         fetchSenderParcel,
                                         }}>
       {children}

@@ -45,7 +45,7 @@ function App() {
           </ProtectedRoute>
           }/>
         <Route path="/parcel/:id" element={<SingleParcel/>}/>
-        <Route path = "/customer-live" element={
+        <Route path = "/customer-live/:id" element={
           <ProtectedRoute allowedRoles={["customer"]}>
             <CustomerTracking/>
           </ProtectedRoute>
