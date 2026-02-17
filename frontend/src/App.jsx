@@ -10,6 +10,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AgentLiveTrack from "./pages/AgentLiveTrack";
 import CustomerTracking from "./pages/CustomerTracking";
 import Error404 from "./pages/Error404";
+import SingleParcel from "./pages/SingleParcel";
 // </COMPONENT IMPORT>
 
 import {Routes, Route} from "react-router-dom";
@@ -43,6 +44,7 @@ function App() {
             <AgentLiveTrack/>
           </ProtectedRoute>
           }/>
+        <Route path="/parcel/:id" element={<SingleParcel/>}/>
         <Route path = "/customer-live" element={
           <ProtectedRoute allowedRoles={["customer"]}>
             <CustomerTracking/>

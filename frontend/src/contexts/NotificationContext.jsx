@@ -10,7 +10,22 @@ export const NotificationProvider = ({ children }) => {
   const socketRef = useRef(null);
   const [notifications, setNotification] = useState([]);
  const [senderNotifications, setSenderNotifications] = useState([]);
+ const [senderParcels, setSenderParcls] = useState([]);
  const [loading,setLoading] = useState(false);
+
+ const fetchSenderParcel = useCallback(async() => {
+    setLoading(true);
+    try {
+        const res = await api.get("/api/parcel/parcels?created=true");
+        const data = Array.isArray(res.data) ? res.data : [];
+        setSenderParcls([...data].reverse());
+    }catch(err) {
+       console.log("Status:", err.response?.status);
+      console.log("Message:", err.response?.data); 
+    }finally{
+        setLoading(false);
+    }
+}, []); // Empty deps since it doesn't depend on external values
 
 
   useEffect(() => {
@@ -26,6 +41,12 @@ export const NotificationProvider = ({ children }) => {
       const data = JSON.parse(event.data);
       console.log("Received:", data);
       setNotification(prev => [data,...prev]);
+
+      if (data.type === "parcel_created") {
+        setSenderNotifications(prev => [data, ...prev]); 
+        fetchSenderParcel();                          
+    }
+
     };
 
     socketRef.current.onclose = (e) => {
@@ -42,22 +63,11 @@ export const NotificationProvider = ({ children }) => {
       prev.filter(n => n.request_id !== requestId)
     );
   };
-
-const fetchSenderParcel = useCallback(async() => {
-    setLoading(true);
-    try {
-        const res = await api.get("/api/parcel/parcels?created=true");
-        setSenderNotifications(Array.isArray(res.data) ? res.data : []);
-    }catch(err) {
-        console.error("failed to fetch sender parcels", err);
-    }finally{
-        setLoading(false);
-    }
-}, []); // Empty deps since it doesn't depend on external values
-
   return (
     <NotificationContext.Provider value={{notifications,
                                         senderNotifications,
+                                        senderParcels,
+                                        loading,
                                         removeNotification,
                                         fetchSenderParcel,
                                         }}>

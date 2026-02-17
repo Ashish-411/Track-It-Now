@@ -34,39 +34,42 @@ function Login(){
         }
     }
     return(
-        <div className="login-container">
-            <form className="login-form" onSubmit={handleSubmit}>
-                <div className="login-header">
-                    <h1 className="login-title">Login to Your Account</h1>
-                </div>
-                <div className="form-group">
-                    <input type="text" 
-                    placeholder="Email Address"
-                    value={email}
-                    onChange={(e)=>setEmail(e.target.value)}
-                    className="login-input"
-                    required   
-                    />
+         <div className="login-page">
+      
+                <div className="login-container">
+                    <form className="login-form" onSubmit={handleSubmit}>
+                        <div className="login-header">
+                            <h1 className="login-title">Login to Your Account</h1>
+                        </div>
+                        <div className="form-group">
+                            <input type="text" 
+                            placeholder="Email Address"
+                            value={email}
+                            onChange={(e)=>setEmail(e.target.value)}
+                            className="login-input"
+                            required   
+                            />
 
-                    <input type="password" 
-                    placeholder="password"
-                    value={password}
-                    onChange={(e)=>setPassword(e.target.value)}
-                    className="login-input"
-                    required   
-                    />
+                            <input type="password" 
+                            placeholder="password"
+                            value={password}
+                            onChange={(e)=>setPassword(e.target.value)}
+                            className="login-input"
+                            required   
+                            />
+                        </div>
+                        <div className="form-actions">
+                            <button type="submit" 
+                            className="login-btn"
+                            >Login</button>
+                            <NavLink to ="/register" >
+                                <button type="button" className="register-btn">Don't have a account? <span>Register</span></button>
+                            </NavLink>
+                        </div>
+                    </form>
+                    
                 </div>
-                <div className="form-actions">
-                    <button type="submit" 
-                    className="login-btn"
-                    >Login</button>
-                    <NavLink to ="/register" >
-                        <button type="button" className="register-btn">Don't have a account? <span>Register</span></button>
-                    </NavLink>
-                </div>
-            </form>
-            
-        </div>
+            </div>
     );
 
 }
