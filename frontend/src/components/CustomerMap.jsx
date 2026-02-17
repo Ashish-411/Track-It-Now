@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup, Circle, useMap } from "react-leaflet";
 import { useAuth } from "../contexts/AuthContext";
 import { getUserLocation } from "../utils/Location";
@@ -21,6 +21,7 @@ function CustomerMap({ parcelId }) {
   const [selectedAgent, setSelectedAgent] = useState(null);
   const [isAssigned, setIsAssigned] = useState(false);
   const [loading, setLoading] = useState(true);
+  const wsRef = useRef(null);
 
    // Get customer location on mount
   useEffect(() => {
@@ -37,12 +38,14 @@ function CustomerMap({ parcelId }) {
   }, []);
   //websocket for connection
   useEffect(() => {
-  if (!customerLocation) return;
-  if(!user) return;  
-
+  if (!customerLocation || !user || !token) return;
+  
+  if(wsRef.current) return;
   const ws = new WebSocket(
     `ws://localhost:8000/api/agent/search-agents/${user.id}?lat=${customerLocation.lat}&lng=${customerLocation.lng}&token=${token}`
   );
+
+  wsRef.current = ws;
 
   ws.onopen = () => {
     console.log("Connected to agent stream");
@@ -50,8 +53,8 @@ function CustomerMap({ parcelId }) {
 
   ws.onmessage = (event) => {
     const data = JSON.parse(event.data);
+    console.log("customer WS event",event);
     console.log("WS Data:", data);
-
     // SNAPSHOT: show nearby agents
     if (data.nearby_agents) {
       const agentsMap = {};
@@ -67,7 +70,7 @@ function CustomerMap({ parcelId }) {
     }
 
     // REAL-TIME UPDATE: move agent
-    else if (data.type === "agent-location-update") {
+    else if (data.type === "online-agent-location") {
       setNearbyAgents(prev => ({
         ...prev,
         [data.agent_id]: {
@@ -79,8 +82,11 @@ function CustomerMap({ parcelId }) {
     }
   };
 
-  ws.onclose = () => console.log("Customer Map : Agent stream closed");
-  ws.onerror = (err) => console.error(" Customer Map: WS error", err);
+  ws.onclose = () => {
+    console.log("Customer Map : Agent stream closed");
+    wsRef.current = null;
+  }
+  ws.onerror = (err) => console.log(" Customer Map: WS error", err);
 
   return () => ws.close();
 

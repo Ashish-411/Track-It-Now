@@ -42,7 +42,6 @@ function AgentMap({onLocationUpdate, isAssigned , isLive}){
       (error) => {
         console.error("Error getting location:", error);
         alert("Please enable location services");
-        setIsLive(false);
       }
     );
 
@@ -79,18 +78,6 @@ function AgentMap({onLocationUpdate, isAssigned , isLive}){
 
     return () => clearInterval(interval);
   }, [isExpanding, isAssigned]);
-
-  const handleGoLive = () => {
-    setIsLive(true);
-  };
-
-  const handleGoOffline = () => {
-    setIsLive(false);
-    if (watchId !== null) {
-      stopWatchingLocation(watchId);
-      setWatchId(null);
-    }
-  };
 
   return (
     <>

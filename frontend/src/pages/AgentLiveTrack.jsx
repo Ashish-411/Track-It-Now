@@ -13,18 +13,31 @@ function AgentLiveTrack(){
     const location = useLocation();
     const navigate = useNavigate();
     const [isLive, setIsLive] = useState(false);
+    const [wsReady, setWsReady] = useState(false);
+
     //const [assignedParcel, setAssignedParcel] = useState(null);
     const assignedParcel = 1;
     const ws = useRef(null);
+    const agentLocationRef = useRef(null);
+
+     // Auto-start when coming from "Go Online" button
+    useEffect(() => {
+      if (location.state?.shouldGoLive) {
+        setIsLive(true);
+      }
+    }, [location.state]);
 
     // Initialize WebSocket
     useEffect(() => {
-      if (!user?.id) return;
+      if (!user || !token) return;
 
-      ws.current = new WebSocket(`ws://localhost:8000/api/agent/go-online/${user.id}?token=${token}`);
+      if(ws.current) return;
 
-      ws.current.onopen = () => {
-        console.log("WebSocket Connected");
+      const socket = new WebSocket(`ws://localhost:8000/api/agent/go-online/${user.id}?token=${token}`);
+      ws.current = socket;
+      socket.onopen = () => {
+        console.log(" Agent Location WebSocket Connected");
+        setWsReady(true);
 
         // identify agent
         // ws.current.send(JSON.stringify({
@@ -32,9 +45,8 @@ function AgentLiveTrack(){
         //   agentId: user.id
         // }));
       };
-
       //on message
-      ws.current.onmessage = (event) => {
+      socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
 
       // when customer selects this agent
@@ -45,47 +57,55 @@ function AgentLiveTrack(){
       }
     };
 
-    ws.current.onclose = () => {
+    socket.onclose = () => {
     console.log("Agent Live Track WebSocket Disconnected");
+    setWsReady(false);
+    ws.current = null
     };
-    ws.current.onerror = (error) => {
+    socket.onerror = (error) => {
     console.log("Agnet Live Track WebSocket error:", error);
     };
     return () => {
     if (ws.current) {
-      // ws.current.send(JSON.stringify({
-      //   type: "AGENT_OFFLINE",
-      //   agentId: user.id
-      // }));
-
       ws.current.close();
     }
   };
-  }, [user]);
+  }, [user,token]);
   
-    useEffect(() => {
-      if (!agentLocation || !isLive || !ws.current
-        ||ws.current.readyState !== WebSocket.OPEN
-      ) return;
+  
+  useEffect(() =>{
+      console.log("Trying to send");
+      
+      if (!agentLocation || !isLive || !ws.current){
+        console.log("if statement stopped this code");
+        return;
+      } 
+      
+      const interval = setInterval(() => {
+        console.log("STATE:", ws.current?.readyState);
+        if (ws.current?.readyState === WebSocket.OPEN && agentLocationRef.current) {
+            const payload = {
+            type: "AGENT_LOCATION",
+            agent_id: user.id,
+            lat: agentLocationRef.current.lat,
+            lng: agentLocationRef.current.lng,
+            };
 
-      ws.current.send(JSON.stringify({
-        type: "AGENT_LOCATION_UPDATE",
-        agent_id: user.id,
-        lat: agentLocation.lat,
-        lng: agentLocation.lng,
-      }));
+        console.log("SENDING:", payload);
 
-    }, [agentLocation, isLive, assignedParcel, user?.id]);
-    // Auto-start when coming from "Go Online" button
-  useEffect(() => {
-    if (location.state?.shouldGoLive) {
-      setIsLive(true);
-    }
-  }, [location.state]);
+    ws.current.send(JSON.stringify(payload));
+  }
+
+  }, 5000); // every 5 seconds
+
+  return () => clearInterval(interval); //
+}, [isLive,wsReady, user?.id]);
+   
 
   // Handle location updates from AgentMap child component
     const handleLocationUpdate = (location) => {
       setAgentLocation(location);
+      agentLocationRef.current = location;
     };
     // Handle close button
   const handleClose = () => {
