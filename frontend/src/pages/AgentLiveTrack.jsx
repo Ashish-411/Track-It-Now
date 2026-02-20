@@ -1,16 +1,17 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import AgentMap from "../components/AgentMap";
-import DeliveryControls from "../components/DeliveryControls";
 import { useLocation, useNavigate } from "react-router-dom";
 import { IoMdClose } from "react-icons/io";
+import { useNotification } from "../contexts/NotificationContext";
 
 function AgentLiveTrack() {
   const { user, token } = useAuth();
+  const {agentAssignment} = useNotification();
+  const navigate = useNavigate();
   const [agentLocation, setAgentLocation] = useState(null);
   const [isAssigned, setIsAssigned] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
   const [isLive, setIsLive] = useState(() => location.state?.shouldGoLive ?? false);
   const [wsReady, setWsReady] = useState(false);
   const [assignedParcel, setAssignedParcel] = useState(null);
@@ -25,6 +26,16 @@ function AgentLiveTrack() {
   useEffect(() => {
     isLiveRef.current = isLive;
   }, [isLive]);
+  useEffect(() => {
+  if (!agentAssignment) return;
+
+  console.log("Assignment received:", agentAssignment);
+
+  setIsAssigned(true);
+  setAssignedParcel(agentAssignment);
+
+  navigate(`/agent/delivery/${agentAssignment.tracking_code}`);
+}, [agentAssignment, navigate]);
 
   // ── WebSocket factory ──────────────────────────────────────────────────────
   const connectWebSocket = useCallback(() => {
@@ -48,14 +59,12 @@ function AgentLiveTrack() {
       setWsReady(true);
     };
 
-    socket.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      if (data.type === "AGENT_ASSIGNED") {
-        setIsAssigned(true);
-        setAssignedParcel(data.parcel);
-        console.log("Assigned Parcel:", data.parcel);
-      }
-    };
+    // socket.onmessage = (event) => {
+    //   const data = JSON.parse(event.data);
+    //   if (data.type === "_assigned") {
+        
+    //   }
+    // };
 
     socket.onclose = (event) => {
       console.log("Agent Live Track WebSocket Disconnected", event.code);
@@ -93,9 +102,6 @@ function AgentLiveTrack() {
     };
   }, [user?.id, token, connectWebSocket]);
 
-  // ── Location broadcast interval ────────────────────────────────────────────
-  // Runs once on mount; reads fresh values through refs each tick so it never
-  // needs to be recreated when isLive / wsReady change.
   useEffect(() => {
     if (!user?.id) return;
 
@@ -136,67 +142,125 @@ function AgentLiveTrack() {
 
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
+    
+
     <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
-      {/* Header bar */}
-      <div
-        style={{
-          padding: "1rem",
-          background: "#333",
-          color: "white",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <div>
-          <h2 style={{ margin: 0 }}>Agent Live Tracking</h2>
-          <p style={{ margin: "0.5rem 0 0 0" }}>Agent: {user?.name}</p>
-          <p style={{ margin: "0.25rem 0 0 0" }}>
-            Status: {isLive ? "🟢 Live" : "🔴 Offline"}
-          </p>
-          {isAssigned && (
-            <p style={{ margin: "0.25rem 0 0 0" }}>✅ Assigned to delivery</p>
-          )}
+          <style>{`
+        @keyframes livePulse {
+          0%   { box-shadow: 0 0 0 0 rgba(16,185,129,0.4); }
+          60%  { box-shadow: 0 0 0 6px rgba(16,185,129,0); }
+          100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); }
+        `}
+      </style>
+     {/* Header bar */}
+      <div style={{
+        position: "relative",
+        zIndex: 1000,
+        background: "rgba(10, 15, 50, 0.92)",
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
+        borderBottom: "1px solid rgba(255,255,255,0.08)",
+        padding: "0 28px",
+        height: "80px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        flexShrink: 0,
+      }}>
+        {/* Left side */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
+          <div style={{
+            fontSize: "18px",
+            fontWeight: 800,
+            color: "#fff",
+            letterSpacing: "-0.02em",
+            lineHeight: 1,
+          }}>
+            Agent Live Tracking:
+          </div>
+
+          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12.5px", color: "rgba(255,255,255,0.55)", fontWeight: 500 }}>
+              👤 Agent: <strong style={{ color: "rgba(255,255,255,0.85)", fontWeight: 600 }}>{user?.name}</strong>
+            </div>
+            <span style={{ color: "rgba(255,255,255,0.3)" }}>·</span>
+            <span style={{ fontSize: "12.5px", color: "rgba(255,255,255,0.55)", fontWeight: 500 }}>Status:</span>
+
+            {/* Live / Offline indicator */}
+            {isLive ? (
+              <div style={{
+                display: "flex", alignItems: "center", gap: "7px",
+                background: "rgba(16,185,129,0.12)",
+                border: "1px solid rgba(16,185,129,0.3)",
+                borderRadius: "20px",
+                padding: "5px 12px 5px 9px",
+              }}>
+                <div style={{
+                  width: "8px", height: "8px", borderRadius: "50%",
+                  background: "#10b981", flexShrink: 0,
+                  animation: "livePulse 2s ease-in-out infinite",
+                }} />
+                <span style={{ fontSize: "12px", fontWeight: 700, color: "#10b981", letterSpacing: "0.04em" }}>
+                  LIVE
+                </span>
+              </div>
+            ) : (
+              <div style={{
+                display: "flex", alignItems: "center", gap: "7px",
+                background: "rgba(239,68,68,0.12)",
+                border: "1px solid rgba(239,68,68,0.3)",
+                borderRadius: "20px",
+                padding: "5px 12px 5px 9px",
+              }}>
+                <div style={{
+                  width: "8px", height: "8px", borderRadius: "50%",
+                  background: "#ef4444", flexShrink: 0,
+                }} />
+                <span style={{ fontSize: "12px", fontWeight: 700, color: "#ef4444", letterSpacing: "0.04em" }}>
+                  OFFLINE
+                </span>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Close button */}
         <button
           onClick={handleClose}
-          style={{
-            background: "transparent",
-            border: "none",
-            color: "white",
-            cursor: "pointer",
-            fontSize: "2rem",
-            padding: "0.5rem",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            transition: "transform 0.2s",
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
-          onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
           title="Go Offline and Exit"
+          onMouseEnter={e => {
+            e.currentTarget.style.background = "rgba(239,68,68,0.2)";
+            e.currentTarget.style.borderColor = "rgba(239,68,68,0.4)";
+            e.currentTarget.style.color = "#f87171";
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.background = "rgba(255,255,255,0.08)";
+            e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)";
+            e.currentTarget.style.color = "rgba(255,255,255,0.7)";
+          }}
+          style={{
+            width: "38px", height: "38px",
+            borderRadius: "11px",
+            background: "rgba(255,255,255,0.08)",
+            border: "1px solid rgba(255,255,255,0.12)",
+            color: "rgba(255,255,255,0.7)",
+            fontSize: "18px",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            cursor: "pointer",
+            transition: "background 0.15s, color 0.15s",
+            lineHeight: 1,
+          }}
         >
-          <IoMdClose />
+          <IoMdClose/>
         </button>
       </div>
-
-      {/* Map */}
-      <AgentMap
-        onLocationUpdate={handleLocationUpdate}
-        isAssigned={isAssigned}
-        isLive={isLive}
-      />
-
-      {/* Delivery controls — only shown when assigned */}
-      {isAssigned && (
-        <DeliveryControls
-          // parcel={assignedParcel}
-          // onStatusChange={handleStatusChange}
-        />
-      )}
-    </div>
+            {/* Map */}
+            <AgentMap
+              onLocationUpdate={handleLocationUpdate}
+              isAssigned={isAssigned}
+              isLive={isLive}
+            />
+      </div>
   );
 }
 

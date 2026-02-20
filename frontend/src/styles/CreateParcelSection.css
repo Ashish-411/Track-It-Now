@@ -1,14 +1,14 @@
-/* components/CreateParcelSection.css */
 .create-parcel-section {
-  width: 70%;
+  width: 90%;
+  max-width: 600px;
   background: white;
   border-radius: 16px;
   padding: 20px;
-  margin: 7rem 0 20px 8rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin: 60px auto 20px auto; /* Negative margin pulls it up to sit on the boundary */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   border: 1px solid #f0f0f0;
   position: relative;
-  z-index: 5;
+  z-index: 10; /* Higher z-index to sit above the gradient */
 }
 
 .create-parcel-content {
@@ -20,7 +20,7 @@
 
 .create-icon {
   font-size: 40px;
-  color: #000080;
+  color: #152968; /* Match the blue color from layout */
   opacity: 0.8;
 }
 
@@ -41,37 +41,42 @@
 }
 
 .create-btn {
-  padding: 10px 20px;
-  background-color: #000080;
+  padding: 10px 24px;
+  background-color: #152968; /* Match the blue color from layout */
   color: white;
   border: none;
   border-radius: 30px;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
   white-space: nowrap;
+  box-shadow: 0 4px 8px rgba(21, 41, 104, 0.2);
 }
 
 .create-btn:hover {
-  scale: 1.05;
-  background-color: #000066;
-  transition: scale 0.3s ease;
+  transform: translateY(-2px);
+  background-color: #0f1f4a;
+  box-shadow: 0 6px 12px rgba(21, 41, 104, 0.3);
 }
 
-/* Modal Overlay - covers the entire screen */
+.create-btn:active {
+  transform: translateY(0);
+}
+
 .modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  animation: fadeIn 0.2s ease;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.2); /* lighter overlay */
+    /* remove backdrop-filter entirely */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.2s ease;
 }
 
 /* Modal Content - centers the Parcel component */
@@ -81,16 +86,17 @@
   max-height: 90vh;
   overflow-y: auto;
   animation: slideUp 0.3s ease;
+  background: transparent; /* Keep transparent */
+  border-radius: 16px; /* Add border radius */
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+/* Make sure the component inside modal has white background */
+.modal-content > * {
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
 }
+
 
 @keyframes slideUp {
   from {
@@ -103,19 +109,69 @@
   }
 }
 
-/* Responsive */
-@media (max-width: 480px) {
+/* Desktop */
+@media (min-width: 769px) {
+  .create-parcel-section {
+    width: 80%;
+    margin: 100px auto 0 auto;
+    padding: 24px;
+  }
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+  .create-parcel-section {
+    width: 85%;
+    margin: 120px auto 0 auto;
+    padding: 20px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .create-parcel-section {
+    width: 92%;
+    margin: 100px auto 0 auto;
+    padding: 16px;
+  }
+
   .create-parcel-content {
     flex-wrap: wrap;
     gap: 12px;
+  }
+  
+  .create-icon {
+    font-size: 32px;
   }
   
   .create-text {
     min-width: 60%;
   }
   
+  .create-title {
+    font-size: 15px;
+  }
+  
+  .create-subtitle {
+    font-size: 12px;
+  }
+  
   .create-btn {
     width: 100%;
     text-align: center;
+    padding: 10px 16px;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .create-parcel-section {
+    width: 95%;
+    margin: 30px auto 15px auto;
+    padding: 14px;
+  }
+  
+  .create-icon {
+    font-size: 28px;
   }
 }

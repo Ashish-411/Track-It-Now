@@ -1,0 +1,84 @@
+.dc-card {
+  border: 1.5px solid #e8edf5;
+  border-radius: 14px;
+  padding: 14px;
+  background: #f7f9ff;
+  display: flex;
+  flex-direction: row;      /* ← side by side */
+  align-items: center;
+  gap: 12px;
+  transition: box-shadow 0.2s, transform 0.2s;
+  cursor: pointer;
+}
+.dc-card:hover {
+  box-shadow: 0 4px 16px rgba(21, 41, 104, 0.09);
+  transform: translateY(-2px);
+}
+
+.dc-icon {
+  width: 38px; height: 38px;
+  background: #eef3ff;
+  border-radius: 11px;
+  display: flex; align-items: center; justify-content: center;
+  color: #152968;
+  flex-shrink: 0;            /* ← never shrinks */
+}
+
+.dc-details {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;              /* ← allows text-overflow to work */
+  flex: 1;
+}
+
+.dc-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.dc-icon {
+  width: 30px; height: 30px;
+  background: #eef3ff;
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  color: #152968;
+  flex-shrink: 0;
+}
+.dc-parcel-id {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #0f1c3f;
+}
+
+.dc-desc {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #0f1c3f;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dc-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  color: #64748b;
+}
+.dc-row svg { flex-shrink: 0; margin-top: 1px; }
+.dc-place {
+  font-size: 11px;
+  font-weight: 500;
+  color: #64748b;
+  line-height: 1.4;
+  /* allow wrapping since place names can be long */
+}
+
+.dc-date {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #94a3b8;
+  margin-top: 2px;
+}

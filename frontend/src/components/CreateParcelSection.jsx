@@ -1,10 +1,9 @@
-import { IoAddCircleOutline } from 'react-icons/io5';
+import { PiPackageBold } from "react-icons/pi";
 import { useState } from 'react';
 import Parcel from './Parcel';
 import "../styles/CreateParcelSection.css";
 function CreateParcelSection(){
     const [showParcelModal, setShowParcelModal] = useState(false);
-
   const handleCreateClick = () => {
     setShowParcelModal(true);
   };
@@ -16,7 +15,7 @@ function CreateParcelSection(){
   return (
     <section className="create-parcel-section">
       <div className="create-parcel-content">
-        <IoAddCircleOutline className="create-icon" />
+        <PiPackageBold  className="create-icon" />
         <div className="create-text">
           <h3 className="create-title">Create your parcel</h3>
           <p className="create-subtitle">Add new parcel to track</p>

@@ -12,17 +12,6 @@ L.Icon.Default.mergeOptions({
   iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
   shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
 });
-function RecenterMap({ location }) {
-  const map = useMap();
-  
-  useEffect(() => {
-    if (location) {
-      map.setView([location.lat, location.lng], 15);
-    }
-  }, [location, map]);
-  
-  return null;
-}
 function AgentMap({onLocationUpdate, isAssigned , isLive}){
     const { user } = useAuth();
     const [agentLocation, setAgentLocation] = useState(null);
@@ -88,15 +77,20 @@ function AgentMap({onLocationUpdate, isAssigned , isLive}){
           center={[agentLocation.lat, agentLocation.lng]}
           zoom={15}
           style={{ flex: 1 }}
+          scrollWheelZoom={true}
+          doubleClickZoom={true}
+          dragging={true}
+          touchZoom={true}
+          zoomControl={true}
         >
-          <TileLayer
-            attribution='&copy; OpenStreetMap contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
+         <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+          url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+        />
           
           <Marker position={[agentLocation.lat, agentLocation.lng]} />
           
-          {!isAssigned && (
+         
             <Circle
               center={[agentLocation.lat, agentLocation.lng]}
               radius={radius}
@@ -107,9 +101,7 @@ function AgentMap({onLocationUpdate, isAssigned , isLive}){
                 weight: 2,
               }}
             />
-          )}
           
-          <RecenterMap location={agentLocation} />
         </MapContainer>
       ) : (
         <div style={{

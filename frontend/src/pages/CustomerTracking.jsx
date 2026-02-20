@@ -1,12 +1,11 @@
 import { useParams } from "react-router-dom";
 import CustomerMap from "../components/CustomerMap";
 import { IoMdClose } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 
 function CustomerTracking() {
   const {id} = useParams();
   const navigate = useNavigate();
-
   const handleClose = () => {
     navigate(-1);
   };
@@ -45,7 +44,7 @@ function CustomerTracking() {
       </div>
 
       {/* Map Component */}
-      <CustomerMap parcelId={id} />
+      <CustomerMap parcelId={id}/>
     </div>
   );
 }

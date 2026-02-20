@@ -7,8 +7,33 @@
   background: transparent;
   width: 100%;
   color: white;
+  position: relative; /* ← already needed for overlay to anchor to */
+}
+.notification-overlay-layout {
+    position: absolute;    /* relative to layout-app-container */
+    top: 0;
+    right: 0;
+    width: 80%;            /* 50% of the 1000px app container = 500px */
+    height: 100%;
+    min-height: 100vh;
+    overflow-y: auto;
+    z-index: 999;
+    box-shadow: -8px 0 32px rgba(0, 0, 0, 0.18);
+    background: #fff;
+    border-radius: 0 20px 20px 0; /* matches app container right border radius */
 }
 
+.notification-overlay-container {
+    width: 100%;
+    min-height: 100%;
+}
+
+@media (max-width: 700px) {
+    .notification-overlay-layout {
+        width: 100%;
+        border-radius: 0;
+    }
+}
 .app-title {
   font-size: 24px;
   font-weight: 700;
@@ -38,13 +63,13 @@
   border-radius: 50%;
   transition: all 0.2s ease;
 }
-.help-button{
+.icon-button .help-button{
   width: 4.3rem;
   height: 2.5rem;
   border: transparent;
   background-color: white;
   color: black;
-  border-radius: 20px;
+  border-radius: 5%;
   font-size: 15px
 
 }

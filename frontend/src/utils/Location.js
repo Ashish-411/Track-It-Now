@@ -58,3 +58,64 @@ export function stopWatchingLocation(watchId) {
     navigator.geolocation.clearWatch(watchId);
   }
 }
+
+// Reverse geocode (lat,lng → place name) using OSM Nominatim
+export async function getPlaceName(lat, lng) {
+  try {
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`,
+      {
+        headers: {
+          "User-Agent": "TrackItNow/1.0",        // ← Nominatim requires this
+          "Accept-Language": "en",
+        },
+      }
+    );
+
+    if (!response.ok) throw new Error("Failed to fetch location name");
+
+    const data = await response.json();
+    const address = data.address;
+
+    return {
+      full: data.display_name,
+      road: address.road || "",
+      suburb: address.suburb || address.neighbourhood || "",
+      area: address.city_district || "",
+      city: address.city || address.town || address.village || "",
+      state: address.state || "",
+      country: address.country || "",
+    };
+  } catch (error) {
+    console.error("Reverse geocoding error:", error);
+    return null;
+  }
+}
+export async function getRoute(source, destination, profile = "driving") {
+  try {
+    const url = `https://router.project-osrm.org/route/v1/${profile}/${source.lng},${source.lat};${destination.lng},${destination.lat}?overview=full&geometries=geojson`;
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch route");
+    }
+
+    const data = await response.json();
+
+    if (!data.routes || data.routes.length === 0) {
+      throw new Error("No route found");
+    }
+
+    const route = data.routes[0];
+
+    return {
+      distance: route.distance, // in meters
+      duration: route.duration, // in seconds
+      routePoints: route.geometry.coordinates.map(([lng, lat]) => ({ lat, lng })), // array of {lat, lng}
+    };
+  } catch (error) {
+    console.error("Route fetching error:", error);
+    return null;
+  }
+}

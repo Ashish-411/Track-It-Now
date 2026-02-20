@@ -1,36 +1,32 @@
-import Header from "../components/Header";
-import AgentLiveTrack from "../pages/AgentLiveTrack";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { useState, useEffect } from "react";
+import { useNotification } from "../contexts/NotificationContext";
+import AgentHero from "./AgentHero";
+import FeatureDeliveries from "./FeatureDeliveries";
+import api from "../api";
 import "../styles/AgentHome.css";
+import { deduplicateDeliveries } from "../utils/deliveryUtils";
+
 function AgentHome(){
-    const {logout} = useAuth();
+    const {logout,token, user} = useAuth();
     const navigate = useNavigate();
+    const {clearAgentStorage,agentDeliveries,deliveriesLoading} = useNotification(); 
     function handleClick(e){
         e.preventDefault();
         navigate("/agent-live", {state: {shouldGoLive: true}});
     }
- return (
-        <div className="agent-home-container">
-            <div className="agent-app-container">
-                <Header/>
-                <main className="agnet-main-content">
-                    <div className="agnet-content-wrapper">
-                        {/* Go Online Button */}
-                        <button className="go-online-btn" onClick={handleClick}>
-                            Go Online
-                        </button>
-                    </div>
-                <button 
-                    type="button" 
-                    onClick={logout}
-                    className="btn btn-outline">
-                        Logout
-                </button>
-                </main>
-            </div>
+    
+    return (
+        <div className="agent-content-wrapper">
+            <AgentHero totalDeliveries={deliveriesLoading ? 0 : agentDeliveries.length}/>
+            {/* Go Online Button */}
+            <button className="go-online-btn" onClick={handleClick}>
+                Go Online
+            </button>
+                        <FeatureDeliveries deliveries={agentDeliveries} loading={deliveriesLoading}/>
         </div>
     );
-    
 }
+
 export default AgentHome;

@@ -1,0 +1,137 @@
+/* ParcelRequest.css */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.parcel-request-card {
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+    margin-bottom: 16px;
+    border: 1px solid #e5e7eb;
+    transition: all 0.2s ease;
+    width: 100%;
+    max-width: 100%;
+}
+
+.parcel-request-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+}
+
+.parcel-request-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.parcel-request-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0;
+}
+
+.parcel-request-badge {
+    background-color: #f3f4f6;
+    color: #6b7280;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 30px;
+    margin: 0;
+}
+
+.parcel-request-body {
+    margin: 0px 0 16px 0; /* Top:4px, Right:0, Bottom:16px, Left:0 */
+    display: flex;
+    align-items: flex-start;
+}
+
+.parcel-request-message {
+    font-size: 15px;
+    line-height: 1.5;
+    color: #4b5563;
+    text-align: left;
+    margin: 0;
+    word-break: break-word;
+}
+
+.parcel-request-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 4px; /* Add a small top margin */
+}
+
+.accept-btn,
+.decline-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.accept-btn {
+    background-color: #2563eb;
+    color: white;
+}
+
+.accept-btn:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-2px);
+}
+
+.accept-btn:active {
+    transform: translateY(0);
+}
+
+.decline-btn {
+    background-color: #f3f4f6;
+    color: #4b5563;
+}
+
+.decline-btn:hover {
+    background-color: #e5e7eb;
+    color: #1f2937;
+    transform: translateY(-2px);
+}
+
+.decline-btn:active {
+    transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .parcel-request-card {
+        padding: 16px;
+    }
+
+    .parcel-request-title {
+        font-size: 16px;
+    }
+
+    .parcel-request-badge {
+        font-size: 11px;
+        padding: 3px 8px;
+    }
+
+    .parcel-request-message {
+        font-size: 14px;
+    }
+
+    .parcel-request-body {
+        margin: 4px 0 14px 0;
+    }
+
+    .accept-btn,
+    .decline-btn {
+        padding: 10px 14px;
+        font-size: 14px;
+    }
+}

@@ -1,21 +1,32 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import api from "../api";
 import { useRequest } from "../contexts/RequestContext";
 import { useAuth } from "../contexts/AuthContext";
 import { IoClose } from "react-icons/io5";
+import { getUserLocation } from "../utils/Location";
 import "../styles/Parcel.css";
 function Parcel({handleCloseModal}){
     const [description,setDescription] = useState("");
     const [email,setEmail] = useState("");
     const [loading, setLoading] = useState(false); 
     const [error, setError] = useState("");
-    const demoLocation = [27.7172,85.3240];
+    const [userLocation, setUserLocation] = useState(null);
     const {requestData,setRequest} = useRequest();
     const {token,user} = useAuth();
+
+    useEffect(() => {
+    getUserLocation()
+        .then((loc) => setUserLocation(loc))
+        .catch((err) => console.log("Location error:", err));
+}, []);
    async function handleSubmit(e){
         e.preventDefault();
         if(!user){
             alert("user not loaded yet");
+            return;
+        }
+        if(!userLocation){
+            alert("location not loaded");
             return;
         }
         console.log("current user", user);
@@ -26,7 +37,7 @@ function Parcel({handleCloseModal}){
             const response = await api.post("/api/parcel/request",{
                 parcel_description: description,
                 receiver_email: email,
-                sender_location: demoLocation
+                sender_location: userLocation ? [userLocation.lat,userLocation.lng] : [],
                 
             });
             console.log("request response", response);
@@ -42,7 +53,7 @@ function Parcel({handleCloseModal}){
         }
     }
     return(
-        <div className="parcel-modal-overlay">
+        
             <div className="parcel-modal">
                 <div className="parcel-modal-header">
                     <h2 className="parcel-modal-title">Create New Parcel</h2>
@@ -96,7 +107,6 @@ function Parcel({handleCloseModal}){
                     </div>
                 </form>
             </div>
-        </div>
     );
 }
 export default Parcel;

@@ -3,8 +3,11 @@ import { MapContainer, TileLayer, Marker, Popup, Circle, useMap } from "react-le
 import { useAuth } from "../contexts/AuthContext";
 import { getUserLocation } from "../utils/Location";
 import { agentIcon, customerIcon, selectedAgentIcon } from "../utils/mapIcon";
+import { useNavigate } from "react-router-dom";
+import { useNotification } from "../contexts/NotificationContext";
 import api from "../api";
 import "leaflet/dist/leaflet.css";
+import { BACKEND_WEBSOCKET } from "../constants";
 
 function RecenterMap({ location }) {
   const map = useMap();
@@ -14,17 +17,19 @@ function RecenterMap({ location }) {
   return null;
 }
 
-function CustomerMap({ parcelId }) {
+function CustomerMap({ parcelId}) {
   const { user, token } = useAuth();
   const [customerLocation, setCustomerLocation] = useState(null);
   const [nearbyAgents, setNearbyAgents] = useState({});   // always an object/map
   const [selectedAgent, setSelectedAgent] = useState(null);
   const [isAssigned, setIsAssigned] = useState(false);
   const [loading, setLoading] = useState(true);
+  const{setDeliveryAssignment} = useNotification();
 
   const wsRef = useRef(null);
   const shouldConnect = useRef(false);
   const reconnectTimeout = useRef(null);
+  const navigate = useNavigate();
 
   // ── Get customer location on mount ────────────────────────────────────────
   useEffect(() => {
@@ -48,6 +53,10 @@ function CustomerMap({ parcelId }) {
       `ws://localhost:8000/api/agent/search-agents/${user.id}` +
       `?lat=${customerLocation.lat}&lng=${customerLocation.lng}&token=${token}`
     );
+    // const ws = new WebSocket(
+    //   `${BACKEND_WEBSOCKET}/api/agent/search-agents/${user.id}` +
+    //   `?lat=${customerLocation.lat}&lng=${customerLocation.lng}&token=${token}`
+    // );
     wsRef.current = ws;
 
     ws.onopen = () => console.log("CustomerMap: connected to agent stream");
@@ -118,6 +127,7 @@ function CustomerMap({ parcelId }) {
 
   const handleAssignAgent = async (agent) => {
     const target = agent || selectedAgent;
+    console.log("Assgined agent to customer",target);
     if (!target) { alert("Please select an agent first"); return; }
 
     try {
@@ -126,9 +136,17 @@ function CustomerMap({ parcelId }) {
         agent_id: target.id,
       });
       console.log("Assign Agent response:", res);
+      const {agent_name,tracking_code} = res.data;
       setIsAssigned(true);
+      setDeliveryAssignment(prev => [
+              ...prev,
+              {agent_name,tracking_code,parcelId},
+      ]);
       // FIX: keep state as an object so Object.values() keeps working
       setNearbyAgents({ [target.id]: target });
+      navigate(`/track/${tracking_code}`,{
+        state: {agent_name,tracking_code,parcelId}
+      });
     } catch (err) {
       console.log("Agent Assign Failed", err.response?.data);
     }

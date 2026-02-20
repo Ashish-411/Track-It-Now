@@ -1,0 +1,109 @@
+/* Prefix all classes with unauth- to avoid CSS leakage */
+.unauth-container {
+  font-family: 'Outfit', sans-serif;
+  background: #ffffff;
+  color: #0f1c3f;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+}
+
+.unauth-logo {
+  font-size: 20px;
+  font-weight: 900;
+  color: #152968;
+  letter-spacing: -0.02em;
+  margin-bottom: 48px;
+}
+
+.unauth-logo em {
+  color: #2d5fd9;
+  font-style: normal;
+}
+
+.unauth-card {
+  background: #fff;
+  border: 1.5px solid #e2e8f5;
+  border-radius: 24px;
+  padding: 52px 48px;
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 8px 40px rgba(21, 41, 104, 0.07);
+}
+
+.unauth-icon-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+  background: #fef2f2;
+  border: 1.5px solid #fecaca;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  margin: 0 auto 24px;
+}
+
+.unauth-code {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #e11d48;
+  margin-bottom: 10px;
+}
+
+.unauth-title {
+  font-size: 28px;
+  font-weight: 900;
+  color: #152968;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-bottom: 12px;
+}
+
+.unauth-desc {
+  font-size: 14.5px;
+  color: #64748b;
+  line-height: 1.65;
+  margin-bottom: 32px;
+}
+
+.unauth-btn-primary {
+  display: block;
+  width: 100%;
+  background: #152968;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: background 0.15s;
+}
+
+.unauth-btn-primary:hover {
+  background: #0e1e4d;
+}
+
+.unauth-footer-note {
+  margin-top: 32px;
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.unauth-footer-note a {
+  color: #2d5fd9;
+  text-decoration: none;
+}
+
+.unauth-footer-note a:hover {
+  text-decoration: underline;
+}

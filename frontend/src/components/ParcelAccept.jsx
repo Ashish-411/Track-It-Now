@@ -1,19 +1,26 @@
-import { useNavigate } from "react-router-dom";
+import "../styles/ParcelAccept.css";
 
 function ParcelAccept({ notification }) {
-    const navigate = useNavigate();
-
-    function handleClick(e) {
-        e.preventDefault();
-        navigate(`/parcel/${notification.id}`, { state: { parcel: notification } });
-    }
-
     return (
-        <div
-            style={{ border: "1px solid green", padding: "10px", margin: "10px", cursor: "pointer" }}
-            onClick={handleClick}>
-            <p>{notification.message}</p> {/* 👈 just the message */}
+        <div className="parcel-accept-card" >
+            {/* Top green stripe */}
+            <div className="parcel-accept-card__stripe" />
+
+            {/* Body */}
+            <div className="parcel-accept-card__body">
+                {/* Icon */}
+                <div className="parcel-accept-card__icon">
+                    📦
+                </div>
+
+                {/* Text */}
+                <div className="parcel-accept-card__text">
+                    <p className="parcel-accept-card__label">New Parcel</p>
+                    <p className="parcel-accept-card__message">{notification.message}</p>
+                </div>
+            </div>
         </div>
     );
 }
+
 export default ParcelAccept;

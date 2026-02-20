@@ -1,0 +1,61 @@
+.status-notif-card {
+    width: 100%;
+    border-radius: 14px;
+    margin: 10px 0;
+    overflow: hidden;
+    border: 1px solid;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    animation: statusSlideIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.status-notif-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.status-notif-card__body {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+}
+
+.status-notif-card__icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.status-notif-card__text {
+    flex: 1;
+    min-width: 0;
+}
+
+.status-notif-card__label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin: 0 0 4px 0;
+}
+
+.status-notif-card__message {
+    font-size: 14px;
+    color: #111827;
+    font-weight: 500;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@keyframes statusSlideIn {
+    from { opacity: 0; transform: translateX(30px); }
+    to   { opacity: 1; transform: translateX(0);    }
+}

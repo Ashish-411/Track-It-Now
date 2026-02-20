@@ -1,0 +1,96 @@
+.feature-box {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 18px;
+  margin-top: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* header */
+.feature-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.feature-header h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.view-btn {
+  background: none;
+  border: none;
+  color: #3b82f6;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.view-btn:hover {
+  text-decoration: underline;
+}
+
+/* grid — 2 columns by default (tablet+) */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.feature-empty {
+  text-align: center;
+  color: #777;
+  font-size: 14px;
+  padding: 10px 0;
+}
+
+/* Mobile: single column below 480px */
+@media (max-width: 480px) {
+  .feature-box {
+    padding: 14px;
+    border-radius: 10px;
+    margin-top: 14px;
+  }
+
+  .feature-header h3 {
+    font-size: 16px;
+  }
+
+  .feature-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
+/* Mobile: single column below 480px */
+@media (max-width: 900px) {
+  .feature-box {
+    padding: 14px;
+    border-radius: 10px;
+    margin-top: 14px;
+  }
+
+  .feature-header h3 {
+    font-size: 16px;
+  }
+
+  .feature-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  /* Force parcel cards to not overflow */
+  .feature-grid > * {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+}

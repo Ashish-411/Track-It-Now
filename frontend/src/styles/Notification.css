@@ -1,0 +1,114 @@
+/* Notification.css */
+
+.notifications-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0; /* Remove gap to connect with blue area */
+}
+
+/* Filter Tabs */
+.tabs-blue-container {
+    width: 100%;
+    background-color: #000080;
+    padding: 8px 12px 12px; /* add padding so tabs aren't flush */
+}
+.notifications-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
+.notification-tabs {
+    display: flex;
+    gap: 8px;
+    background-color: #f3f4f6;
+    border-radius: 30px;
+    margin-bottom: 8px;
+}
+
+.tab {
+    flex: 1;
+    padding: 10px 16px;
+    border: none;
+    background: none;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tab.active {
+    background-color: white;
+    color: #2563eb;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.tab:hover:not(.active) {
+    background-color: #e5e7eb;
+    color: #4b5563;
+}
+
+/* Empty State */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 48px 24px;
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin-top: 20px;
+}
+
+.empty-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.7;
+}
+
+.empty-state h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0 0 8px 0;
+}
+
+.empty-state p {
+    color: #6b7280;
+    font-size: 14px;
+    max-width: 280px;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Notifications List */
+.notifications-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .tab {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+    
+    .empty-state {
+        padding: 32px 16px;
+    }
+    
+    .empty-state h3 {
+        font-size: 18px;
+    }
+    
+    .empty-state p {
+        font-size: 13px;
+    }
+}

@@ -30,8 +30,19 @@ function Login(){
             login({access_token:res.data.access_token});
             navigate("/");
         }catch(err){
-            console.log(err);
+        if (err.response && err.response.status === 401) {
+            alert("Invalid email or password");
+            return; // stop execution
         }
+
+        // other server errors
+        if (err.response) {
+            alert(err.response.data.detail || "Login failed");
+            return;
+        }
+        // network error
+        alert("Server unreachable. Try again.");
+    } 
     }
     return(
          <div className="login-page">

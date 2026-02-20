@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
-import "../styles/ParcelIcon.css"
+import { PiPackageBold } from "react-icons/pi";
+
+import "../styles/ParcelIcon.css";
 function ParcelIcon({parcel}){
     const navigate = useNavigate();
     function handleClick(e){
@@ -21,7 +23,7 @@ function ParcelIcon({parcel}){
         <div className="parcelCard" onClick={handleClick}>
         {/* Parcel Icon */}
         <div className="parcelIcon">
-            <div className="parcelBox"></div>
+            <PiPackageBold color="#152968"/>
             <span className="parcelLabel">PARCEL</span>
         </div>
 
@@ -45,7 +47,7 @@ function ParcelIcon({parcel}){
             </div>
             
             <div className="onWay">
-                On the way • {new Date(parcel.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                {parcel.current_status} • {new Date(parcel.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
             </div>
             </div>
         </div>

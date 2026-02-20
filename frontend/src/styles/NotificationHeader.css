@@ -1,0 +1,113 @@
+/* NotificationHeader.css */
+
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px 4px;
+    width: 100%;
+    color: white;
+}
+
+.notification-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.back-button {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.back-button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+.back-button:active {
+    transform: scale(0.95);
+}
+
+.notification-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.3px;
+    color: white;
+}
+
+.help-button {
+    display: flex;
+    align-items: center;
+    background: white;
+    border: none;
+    color: #1f2937;
+    padding: 2px 5px;
+    border-radius: 30px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Fix for the headset icon */
+.help-button svg {
+    color: #1f2937; /* Dark color for the icon */
+    font-size: 20px;
+}
+
+.help-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.help-button:hover svg {
+    color: #000000; /* Darker on hover */
+}
+
+.help-button:active {
+    transform: scale(0.95);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .notification-header {
+        padding: 12px 16px 2px;
+    }
+    
+    .notification-title {
+        font-size: 22px;
+    }
+    
+    .help-button {
+        padding: 6px 12px;
+        font-size: 14px;
+        gap: 6px;
+    }
+    
+    .help-button svg {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 360px) {
+    .help-button {
+        padding: 8px;
+        gap: 0;
+    }
+    
+    .help-button svg {
+        font-size: 20px;
+        margin: 0;
+    }
+}

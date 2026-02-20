@@ -1,0 +1,96 @@
+.fd-box {
+  background: #ffffff;
+  border: 1.5px solid #e8edf5;
+  border-radius: 18px;
+  padding: 18px;
+  width: 100%;
+  align-self: stretch;
+}
+
+.fd-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.fd-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #0f1c3f;
+  letter-spacing: -0.02em;
+}
+.fd-view-btn {
+  background: none;
+  border: none;
+  color: #2d5fd9;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+}
+.fd-view-btn:hover { text-decoration: underline; }
+
+.fd-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.fd-empty {
+  text-align: center;
+  color: #94a3b8;
+  font-size: 13px;
+  padding: 16px 0;
+}
+
+/* Card */
+.fd-card {
+  border: 1.5px solid #e8edf5;
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: #f7f9ff;
+}
+.fd-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.fd-icon {
+  width: 34px; height: 34px;
+  background: #eef3ff;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  color: #152968;
+  flex-shrink: 0;
+}
+.fd-parcel-id {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f1c3f;
+}
+.fd-desc {
+  font-size: 11px;
+  color: #64748b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Badges */
+.fd-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 20px;
+  letter-spacing: 0.03em;
+}
+.fd-completed  { background: #e8fdf4; color: #00a864; }
+.fd-inprogress { background: #eef3ff; color: #2d5fd9; }
+.fd-assigned   { background: #fffbeb; color: #d97706; }
+.fd-pending    { background: #f1f5f9; color: #64748b; }
+
+@media (max-width: 900px) {
+  .fd-grid { grid-template-columns: 1fr; }
+}
