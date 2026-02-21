@@ -14,7 +14,8 @@
 
 .input-wrapper {
   position: relative;
-  flex: 1; /* This makes the wrapper take available space */
+  flex: 1;
+  margin-bottom: 4px; 
 }
 
 .search-icon {
@@ -52,6 +53,7 @@
   width: 100px;
   padding: 12px 24px;
   background-color: rgba(225, 101, 29, 0.944);
+  margin-top: 10px;
   color: white;
   border: none;
   border-radius: 25px;

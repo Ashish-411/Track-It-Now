@@ -77,6 +77,8 @@ body {
     display: flex;
     flex-direction: column;
     margin-bottom: 0px;
+    flex-shrink: 0; 
+
 }
 
 /* Header styles */
@@ -148,13 +150,13 @@ body {
 .notification-main-content {
     flex: 1;
     background-color: #ffffff;
-    padding: 24px 20px;
+    padding: 24px 20px 80px 20px;
     display: flex;
     flex-direction: column;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
+    overflow-y: auto;
 }
-
 /* No notifications message styling */
 .notification-main-content p {
     text-align: center;

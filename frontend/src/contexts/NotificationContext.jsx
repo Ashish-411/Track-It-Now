@@ -79,7 +79,6 @@ const [deliveryStatus, setDeliveryStatus] = useState(() => {
 const clearActiveDelivery = () => {
     setAgentAssignment(null);
     setAgentParcel(null);
-    setDeliveryStatus("pending");          // ← resets cleanly
     localStorage.removeItem("agentAssignment");
     localStorage.removeItem("agentParcel");
     localStorage.removeItem("deliveryStatus");
@@ -206,6 +205,7 @@ useEffect(() => {
     else if(data.type === "parcel-assigned"){
       console.log(data);
       alert(data.message);
+      setDeliveryStatus("pending");
       setAgentAssignment(data);
       fetchAgentParcel(data.parcel_id);
     }else if(data.type === "agent-assigned"){

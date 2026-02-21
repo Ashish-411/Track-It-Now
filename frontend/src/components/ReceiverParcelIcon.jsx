@@ -13,6 +13,7 @@ const STEP_LABELS = ["Created", "Picked Up", "In Transit", "Delivered"];
 function getStepState(stepKey, currentStatus) {
   const stepIdx    = STEPS.indexOf(stepKey);
   const currentIdx = STEPS.indexOf(currentStatus);
+  if (currentStatus === "delivered") return "done";
   if (stepIdx < currentIdx)  return "done";
   if (stepIdx === currentIdx) return "active";
   return "pending";
@@ -20,13 +21,13 @@ function getStepState(stepKey, currentStatus) {
 
 function getLineState(lineIndex, currentStatus) {
   const currentIdx = STEPS.indexOf(currentStatus);
-  if (lineIndex < currentIdx - 1) return "done";
-  if (lineIndex === currentIdx - 1) return "dashed";
+  if (lineIndex < currentIdx) return "done";
+  if (lineIndex === currentIdx) return "dashed";
   return "pending";
 }
 
 function ReceiverParcelIcon({ parcel, onClick }) {
-  const status   = parcel.status || "created";
+  const status   = parcel.current_status || "created";
   const config   = STATUS_CONFIG[status] || STATUS_CONFIG.created;
   const dateStr  = parcel.created_at
     ? new Date(parcel.created_at).toLocaleDateString("en-GB", { day: "2-digit", month: "long" })

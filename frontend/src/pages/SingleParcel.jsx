@@ -301,6 +301,8 @@ function SingleParcel() {
 
                         {/* Actions */}
                         <div className="sp-actions">
+                            {
+                                singleParcel.current_status === "created" ? (
                                     <button className="sp-btn-primary" onClick={handleSearchAgents}
 
                                     style={{ 
@@ -309,12 +311,10 @@ function SingleParcel() {
                                     }} >
                                         🤝 Search Agents
                                     </button>     
-                            {/* {
-                                singleParcel.current_status === "created" ? (
                                 ):(
                                     ""
                                 )
-                            } */}
+                            }
                         </div>
                     </div>
                 </div>

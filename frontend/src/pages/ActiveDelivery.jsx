@@ -30,9 +30,9 @@ function ActiveDelivery() {
   //check valid tracking code from parameter
   const match = agentAssignment?.tracking_code === tracking_code;
 useEffect(() => {
-    if (!match && deliveryStatus !== "delivered") {
-        navigate("/unauthorized");
-    }
+    if (deliveryStatus === "delivered") return; 
+    if (!agentAssignment) return;               
+    if (!match) navigate("/unauthorized"); 
 }, [match, deliveryStatus,agentAssignment]);
 
   const connectWebSocket = useCallback(() => {

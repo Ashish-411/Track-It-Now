@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState , useRef} from "react";
 import { useNotification } from "../contexts/NotificationContext";
 import { useAuth } from "../contexts/AuthContext";
 import api from "../api";
@@ -8,20 +8,26 @@ function DeliveryControls() {
     const { user } = useAuth();
     const [loading, setLoading] = useState(false);
 
+const isSubmitting = useRef(false);
+
 const updateStatus = async (status) => {
+    if (isSubmitting.current) return; // ← block duplicate calls
+    isSubmitting.current = true;
     setLoading(true);
+    
     const parcelId     = agentParcel?.id;
     const trackingCode = agentAssignment?.tracking_code;
     try {
-        if (status === "delivered") {
+       if (status === "delivered") {
             await api.post(`/api/parcel/delivery_completed?parcel_id=${parcelId}&tracking_code=${trackingCode}`);
-            setDeliveryStatus("delivered"); // ← triggers <DeliveryCompleted/>
-            clearActiveDelivery();
-            localStorage.removeItem("deliveryStatus");
+            setDeliveryStatus("delivered"); 
+            setTimeout(() => {
+                clearActiveDelivery();
+                localStorage.removeItem("deliveryStatus");
+            }, 100);
             return;
-        }
+            }
 
-        // All other statuses use the normal update route
         await api.post(`/api/parcel/status/update?parcel_id=${parcelId}&status=${status}`);
         setDeliveryStatus(status);
         localStorage.setItem("deliveryStatus", status);
@@ -31,6 +37,7 @@ const updateStatus = async (status) => {
         alert("Failed to update status");
     } finally {
         setLoading(false);
+        isSubmitting.current = false; // ← reset after completion
     }
 };
      const steps = [

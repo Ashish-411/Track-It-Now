@@ -76,7 +76,7 @@ function Orders() {
 
       {!loading && !error && parcels.length > 0 && (
         <div className="orders-grid">
-          {parcels.map(parcel => (
+          {[...parcels].reverse().map(parcel => (
             <ReceiverParcelIcon
               key={parcel.id}
               parcel={parcel}

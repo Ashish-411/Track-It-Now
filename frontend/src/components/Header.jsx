@@ -3,7 +3,7 @@ import { LiaHeadsetSolid } from "react-icons/lia";
 import "../styles/Header.css";
 import { useNavigate } from "react-router-dom";
 
-function Header({ onNotificationToggle }) {
+function Header({ onNotificationToggle,hasNewNotifications  }) {
     const navigate = useNavigate();
     function handleHelpButton(e){
         e.preventDefault();
@@ -16,7 +16,21 @@ function Header({ onNotificationToggle }) {
             </div>
             <div className="header-right">
                 <button className="icon-button" aria-label="Notifications" onClick={onNotificationToggle}>
-                    <VscBell size={24} />
+                    <div style={{ position: "relative", display: "inline-flex" }}>
+                        <VscBell size={24} />
+                        {hasNewNotifications && (
+                            <span style={{
+                                position:     "absolute",
+                                top:          -4,
+                                right:        -4,
+                                width:        9,
+                                height:       9,
+                                borderRadius: "50%",
+                                background:   "#ef4444",
+                                border:       "2px solid white",
+                            }} />
+                        )}
+                    </div>
                 </button>
                 <button className="icon-button help-button" aria-label="Help">
                     <LiaHeadsetSolid size={24} onClick={handleHelpButton}/>Help
