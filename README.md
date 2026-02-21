@@ -55,12 +55,12 @@ It allows customers to send parcels and track delivery agents live on the map.
 
 ##  How To Run The Project
 
-### 1️. Clone the repository
+### 1️. Clone the Repository
 
 ```bash
 git clone https://github.com/Ashish-411/Track-It-Now.git
 
 ### 2. Frontend Setup
-cd frontend
+cd Track-It-Now/frontend
 npm install
 npm run dev
