@@ -59,8 +59,14 @@ It allows customers to send parcels and track delivery agents live on the map.
 
 ```bash
 git clone https://github.com/Ashish-411/Track-It-Now.git
+```
 
-### 2. Frontend Setup
+---
+
+### 2️. Frontend Setup
+
+```bash
 cd Track-It-Now/frontend
 npm install
 npm run dev
+```
