@@ -42,7 +42,7 @@ It allows customers to send parcels and track delivery agents live on the map.
 
 ---
 ### 🧾Single Parcel Details
-![Single Parcel Details]images/(SingleParcel.webp)
+![Single Parcel Details](images/SingleParcel.webp)
 
 ---
 
