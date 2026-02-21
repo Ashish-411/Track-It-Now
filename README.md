@@ -23,7 +23,6 @@ It allows customers to send parcels and track delivery agents live on the map.
 - React
 - React Router
 - React-icons
-- WebSockets
 - React Leaflet
 - Axios
 - WebSocket
