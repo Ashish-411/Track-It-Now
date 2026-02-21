@@ -33,12 +33,16 @@ It allows customers to send parcels and track delivery agents live on the map.
 
 ---
 
-### 👤 Customer Home
+### 👤 Customer Home Page
 ![Customer Home](images/CustomerHome.webp)
 
 ---
-### 📦 Customer Parcels
+### 📦 Customer Parcels Page
 ![Parcels](images/Parcels.webp)
+
+---
+### 🧾Single Parcel Details
+![Single Parcel Details]images/(SingleParcel.webp)
 
 ---
 
@@ -47,7 +51,7 @@ It allows customers to send parcels and track delivery agents live on the map.
 
 ---
 
-### 🏠 Agent Home
+### 🏠 Agent Home Page
 ![Agent Home](images/AgentHome.webp)
 ---
 
