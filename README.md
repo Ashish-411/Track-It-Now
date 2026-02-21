@@ -1,4 +1,3 @@
-images/
 # 🚚 Track-It-Now – Real-Time Parcel Tracking System
 
 TrackItNow is a real-time parcel delivery and tracking system built using React, WebSockets, and OpenStreetMap.  
