@@ -51,7 +51,6 @@ It allows customers to send parcels and track delivery agents live on the map.
 
 ### 🏠 Agent Home
 ![Agent Home](images/AgentHome.webp)
-
 ---
 
 ##  How To Run The Project
@@ -60,7 +59,7 @@ It allows customers to send parcels and track delivery agents live on the map.
 
 ```bash
 git clone https://github.com/Ashish-411/Track-It-Now.git
----
+
 ### 2. Frontend Setup
 cd frontend
 npm install
