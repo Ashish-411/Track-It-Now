@@ -41,24 +41,29 @@ useEffect(() => {
       <div className="ah-hero-circle-top" />
       <div className="ah-hero-circle-bottom" />
 
+      {/* Background cityscape */}
+      <img
+        src="./background.png"
+        alt=""
+        aria-hidden="true"
+        className="ah-hero-bg"
+      />
+
       {/* Top row */}
       <div className="ah-hero-top">
         <div>
           <div className="ah-greeting">{getGreeting()}</div>
           <div className="ah-name">{user?.name || "Agent"}</div>
         </div>
-
       </div>
 
       {/* Count row */}
       <div className="ah-count-row">
         <div className="ah-count-number">{displayCount}</div>
-          <div className="ah-count-label">Total Deliveries</div>
-        <div className="ah-count-info">
-        </div>
+        <div className="ah-count-label">Total Deliveries</div>
+        <div className="ah-count-info" />
       </div>
     </div>
-  );
+);
 }
-
 export default AgentHero;

@@ -2,6 +2,8 @@ import { useLocation, useNavigate, useParams} from "react-router-dom";
 import "../styles/SingleParcel.css";
 import { getPlaceName } from "../utils/Location"; 
 import { useState,useEffect } from "react";
+import { useAuth } from "../contexts/AuthContext";
+import api from "../api";
 
 
 // Derive step state from current_status
@@ -20,10 +22,27 @@ function getStepState(stepStatus, currentStatus) {
 function SingleParcel() {
     const { id }      = useParams();
     const { state }   = useLocation();
+    const {user} = useAuth();
     const navigate    = useNavigate();
     const [pickupPlace, setPickupPlace] = useState("");
     const [dropoffPlace, setDropoffPlace] = useState("");
     const singleParcel = state?.parcel;
+    const [receiverName, setReceiverName] = useState("");
+
+    useEffect(() => {
+    if (!singleParcel?.receiver_id) return;
+
+    async function fetchReceiver() {
+        try {
+            const res = await api.get(`/api/auth/get-user?user_id=${singleParcel.receiver_id}`);
+            setReceiverName(res.data.name);
+        } catch(err) {
+            console.log(err);
+        }
+    }
+
+    fetchReceiver();
+}, [singleParcel?.receiver_id]);
 
     useEffect(() => {
     const fetchPlaces = async () => {
@@ -35,6 +54,7 @@ function SingleParcel() {
                     singleParcel.source[0],
                     singleParcel.source[1]
                 );
+                if(!place) return;
             setPickupPlace(
             place.road
                 ? `${place.road}, ${place.suburb || place.city}`
@@ -46,6 +66,7 @@ function SingleParcel() {
                     singleParcel.destination[0],
                     singleParcel.destination[1]
                 );
+                if(!place) return;
             setDropoffPlace(
                         place.road
                             ? `${place.road}, ${place.suburb || place.city}`
@@ -116,44 +137,7 @@ function SingleParcel() {
 
             <div className="sp-inner">
                 {/* ── HERO ── */}
-                <div className="sp-hero">
-                    <div className="sp-hero-left">
-                        <div className="sp-hero-eyebrow">Parcel Identifier</div>
-                        <div className="sp-hero-id"><em>#</em>{singleParcel.id}</div>
-
-                        {/* Step tracker */}
-                        <div className="sp-steps">
-                            {steps.map((s, i) => {
-                                const st = getStepState(s.key, status);
-                                return (
-                                    <>
-                                        <div className="sp-step" key={s.key}>
-                                            <div className={`sp-step-circle ${st}`}>
-                                                {st === "done" ? "✓" : st === "active" ? s.activeIcon : "○"}
-                                            </div>
-                                            <div className={`sp-step-lbl ${st}`}>{s.label}</div>
-                                        </div>
-                                        {i < steps.length - 1 && (
-                                            <div className={`sp-step-line ${getStepState(steps[i + 1].key, status) !== "future" || st === "done" ? "done" : ""}`} key={`line-${i}`} />
-                                        )}
-                                    </>
-                                );
-                            })}
-                        </div>
-                    </div>
-
-                    {/* ETA card */}
-                    <div className="sp-hero-right">
-                        <div className="sp-eta-label">Status</div>
-                        <div className="sp-eta-val">{statusLabel}</div>
-                        <div className="sp-eta-date">{updated.date}</div>
-                        <div className="sp-eta-divider" />
-                        <div className="sp-eta-status">
-                            <span className="sp-pulse-dot" />
-                            Live Tracking
-                        </div>
-                    </div>
-                </div>
+                
 
                 {/* ── MAIN GRID ── */}
                 <div className="sp-main-grid">
@@ -183,9 +167,7 @@ function SingleParcel() {
                                     <div className="sp-card-title-icon" style={{ background: "#f0f7ff" }}>🗺️</div>
                                     Route Overview
                                 </div>
-                                <span style={{ fontSize: 11, fontWeight: 700, background: "var(--blue-lt)", color: "var(--blue)", padding: "4px 12px", borderRadius: 20, letterSpacing: ".05em", textTransform: "uppercase" }}>
-                                    Live
-                                </span>
+                                
                             </div>
 
                             {/* Decorative map canvas */}
@@ -275,14 +257,14 @@ function SingleParcel() {
                                         <div className="sp-person-avatar sender">📤</div>
                                         <div>
                                             <div className="sp-person-role">Sender</div>
-                                            <div className="sp-person-id">#{singleParcel.sender_id}</div>
+                                            <div className="sp-person-id">{user?.name}</div>
                                         </div>
                                     </div>
                                     <div className="sp-person-row">
                                         <div className="sp-person-avatar receiver">📥</div>
                                         <div>
                                             <div className="sp-person-role">Receiver</div>
-                                            <div className="sp-person-id">#{singleParcel.receiver_id}</div>
+                                            <div className="sp-person-id">{receiverName}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -319,14 +301,20 @@ function SingleParcel() {
 
                         {/* Actions */}
                         <div className="sp-actions">
-                            <button className="sp-btn-primary" onClick={handleSearchAgents}
-                            disabled={singleParcel.current_status === "assigned"}
-                            style={{ 
-                                opacity: singleParcel.current_status === "assigned" ? 0.5 : 1,
-                                cursor:  singleParcel.current_status === "assigned" ? "not-allowed" : "pointer",
-                            }} >
-                                🤝 Search Agents
-                            </button>
+                                    <button className="sp-btn-primary" onClick={handleSearchAgents}
+
+                                    style={{ 
+                                        opacity: singleParcel.current_status === "assigned" ? 0.5 : 1,
+                                        cursor:  singleParcel.current_status === "assigned" ? "not-allowed" : "pointer",
+                                    }} >
+                                        🤝 Search Agents
+                                    </button>     
+                            {/* {
+                                singleParcel.current_status === "created" ? (
+                                ):(
+                                    ""
+                                )
+                            } */}
                         </div>
                     </div>
                 </div>

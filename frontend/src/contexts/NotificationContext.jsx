@@ -13,7 +13,7 @@ export const NotificationProvider = ({ children }) => {
   const { user, token } = useAuth();
   const socketRef = useRef(null);
   const [notifications, setNotification] = useState([]);
- const [senderNotifications, setSenderNotifications] = useState(() =>{
+  const [senderNotifications, setSenderNotifications] = useState(() =>{
   try {
         const stored = localStorage.getItem("senderNotifications");
         const parsed = stored ? JSON.parse(stored) : [];
@@ -62,20 +62,27 @@ const [statusNotifications, setStatusNotifications] = useState(() => {
 const [agentDeliveries, setAgentDeliveries] = useState([]);
 const [deliveriesLoading, setDeliveriesLoading] = useState(false);
 
-
-
+const [deliveryStatus, setDeliveryStatus] = useState(() => {
+    try {
+        const assignment = localStorage.getItem("agentAssignment");
+        if (!assignment) return "pending";
+        return localStorage.getItem("deliveryStatus") ?? "pending";
+    } catch { return "pending"; }
+});
 
 //clear notifications
  const clearSenderNotifications = () => {
     setSenderNotifications([]);
     localStorage.removeItem("senderNotifications");
 };
-//clear agent parcel and assignment
+//  clearActiveDelivery
 const clearActiveDelivery = () => {
     setAgentAssignment(null);
     setAgentParcel(null);
+    setDeliveryStatus("pending");          // ← resets cleanly
     localStorage.removeItem("agentAssignment");
     localStorage.removeItem("agentParcel");
+    localStorage.removeItem("deliveryStatus");
 };
 
 const clearDeliveryAssignment = () => {
@@ -85,7 +92,6 @@ const clearDeliveryAssignment = () => {
 const clearAgentStorage = () => {
     setAgentAssignment(null);
     setAgentParcel(null);
-    setDeliveryAssignment(null);
     setSingleParcel(null);
     setAgentDeliveries([]);
     clearActiveDelivery();
@@ -104,6 +110,10 @@ const fetchAgentParcel = useCallback(async (parcelId) => {
         console.log("Message:", err.response?.data);
     }
 }, []);
+useEffect(() => {
+    if (!agentAssignment?.parcel_id || agentParcel) return;
+    fetchAgentParcel(agentAssignment.parcel_id);
+}, [agentAssignment?.parcel_id, agentParcel]);
 
 const fetchAgentDeliveries = useCallback(async () => {
     if (!user?.id || user.role !== "agent") return;
@@ -120,7 +130,7 @@ const fetchAgentDeliveries = useCallback(async () => {
 useEffect(() => {
     if (!user || !token || user.role !== "agent") return;
     fetchAgentDeliveries();
-}, [user?.id, token])
+}, [user?.id, token]);
 
 
  const fetchSenderParcel = useCallback(async() => {
@@ -247,11 +257,14 @@ useEffect(() => {
                                         deliveryAssignment,
                                         statusNotifications,
                                         agentDeliveries,
+                                        deliveryStatus,
+                                        setDeliveryStatus,
                                         setSingleParcel,
                                         setDeliveryAssignment,
                                         clearDeliveryAssignment,
                                         clearAgentStorage,
                                         clearActiveDelivery,
+                                        setStatusNotifications,
                                         removeNotification,
                                         clearSenderNotifications,
                                         fetchSenderParcel,

@@ -67,6 +67,7 @@ function CustomerLiveTrack() {
         socket.onopen = () => console.log("Customer tracking WS connected");
         socket.onmessage = (event) => {
             const data = JSON.parse(event.data);
+            console.log("Got agent data:",data);
             setAgentLocation({ lat: data.lat, lng: data.lng });
         };
         socket.onclose = (e) => {

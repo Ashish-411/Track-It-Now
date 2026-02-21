@@ -51,7 +51,7 @@
 .track-btn {
   width: 100px;
   padding: 12px 24px;
-  background-color: rgba(255, 94, 0, 0.944);
+  background-color: rgba(225, 101, 29, 0.944);
   color: white;
   border: none;
   border-radius: 25px;
@@ -63,7 +63,7 @@
 }
 
 .track-btn:hover {
-  background-color: rgba(216, 83, 5, 0.944);
+  background-color: #1f4dc0;
 }
 @media (max-width: 768px) {
   .tracking-input-group {

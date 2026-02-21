@@ -10,11 +10,13 @@ import NoNotifications from "../components/NoNotifications";
 import NotificationLayout from "../components/NotificationLayout";
 import "../styles/Notification.css"
 function Notification({ isOverlay = false, onClose }){
-    const {notifications, senderNotifications, fetchSenderParcel, statusNotifications, agentAssignment, deliveryAssignment } = useNotification();
+    const {notifications,senderNotifications, fetchSenderParcel, statusNotifications, agentAssignment, deliveryAssignment } = useNotification();
     const {user} = useAuth();
     const [activeTab, setActiveTab] = useState("All");
 
+
     useEffect(() => {
+        if(user?.role ==="agent") return;
         fetchSenderParcel();
     }, [fetchSenderParcel]);
 
@@ -38,32 +40,32 @@ function Notification({ isOverlay = false, onClose }){
 
 
     const renderRequests = () => (
-        <>
-            {notifications.map((n, index) => {
-                if (n.type === "parcel_request") {
-                    return <ParcelRequest key={index} notification={n} />;
-                }
-                return null;
-            })}
-            {senderNotifications.map((sn, index) => (
-                <ParcelAccept key={index} notification={sn} />
-            ))}
-            {deliveryAssignment?.map((d, index) => (
-                <AgentAssignment key={index} assignment={d} />
-            ))}
-            {isAgent && agentAssignment && (
-                <AgentNotificationIcon assignment={agentAssignment} />
-            )}
-        </>
-    );
+    <>
+        {[...notifications].reverse().map((n, index) => {
+            if (n.type === "parcel_request") {
+                return <ParcelRequest key={index} notification={n} />;
+            }
+            return null;
+        })}
+        {[...senderNotifications].reverse().map((sn, index) => (
+            <ParcelAccept key={index} notification={sn} />
+        ))}
+        {[...deliveryAssignment ?? []].reverse().map((d, index) => (
+            <AgentAssignment key={index} assignment={d} />
+        ))}
+        {isAgent && agentAssignment && (
+            <AgentNotificationIcon assignment={agentAssignment} />
+        )}
+    </>
+);
 
-    const renderStatusChanged = () => (
-        <>
-            {statusNotifications.map((n, index) => (
-                <StatusChangeNotification key={index} assignment={n} />
-            ))}
-        </>
-    );
+const renderStatusChanged = () => (
+    <>
+        {[...statusNotifications].reverse().map((n, index) => (
+            <StatusChangeNotification key={index} assignment={n} />
+        ))}
+    </>
+);
 
     const renderAll = () => (
         <>

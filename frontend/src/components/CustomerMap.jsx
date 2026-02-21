@@ -139,7 +139,7 @@ function CustomerMap({ parcelId}) {
       const {agent_name,tracking_code} = res.data;
       setIsAssigned(true);
       setDeliveryAssignment(prev => [
-              ...prev,
+              ...(Array.isArray(prev) ? prev : []),
               {agent_name,tracking_code,parcelId},
       ]);
       // FIX: keep state as an object so Object.values() keeps working

@@ -15,12 +15,34 @@ body {
 /* Blue Section - This area will have the blue gradient from Layout */
 .blue-content {
   background: transparent;
-  padding: 20px 20px 50px 20px; /* Extra bottom padding for the overlap */
+  padding: 20px 20px 50px 20px;
   position: relative;
   z-index: 1;
   width: 100%;
+  min-height: 50vh;   /* ← matches the 50% blue gradient in layout */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
+.user-img-bg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
+}
+.create-parcel-boundary {
+  position: relative;
+  z-index: 10;
+  margin-top: -100px;    /* ← pulls up into blue section */
+  margin-bottom: -40px; /* ← pushes down into white section */
+  padding: 0 20px;
+}
 /* White Section - This area will have white background from Layout */
 .white-content {
   background: transparent;
@@ -30,7 +52,6 @@ body {
   width: 100%;
   min-height: 300px;
 }
-
 /* Content wrapper for consistent padding */
 .content-wrapper {
   width: 100%;

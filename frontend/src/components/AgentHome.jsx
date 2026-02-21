@@ -11,7 +11,7 @@ import { deduplicateDeliveries } from "../utils/deliveryUtils";
 function AgentHome(){
     const {logout,token, user} = useAuth();
     const navigate = useNavigate();
-    const {clearAgentStorage,agentDeliveries,deliveriesLoading} = useNotification(); 
+    const {agentDeliveries,deliveriesLoading} = useNotification(); 
     function handleClick(e){
         e.preventDefault();
         navigate("/agent-live", {state: {shouldGoLive: true}});
@@ -24,7 +24,7 @@ function AgentHome(){
             <button className="go-online-btn" onClick={handleClick}>
                 Go Online
             </button>
-                        <FeatureDeliveries deliveries={agentDeliveries} loading={deliveriesLoading}/>
+            <FeatureDeliveries deliveries={agentDeliveries} loading={deliveriesLoading}/>
         </div>
     );
 }

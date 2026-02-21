@@ -15,7 +15,7 @@ function CustomerTracking() {
       {/* Header */}
       <div style={{
         padding: "1rem",
-        background: "#2196F3",
+        background: "#0c1340",
         color: "white",
         display: "flex",
         justifyContent: "space-between",

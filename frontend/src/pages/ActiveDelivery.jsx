@@ -11,12 +11,11 @@ import { BACKEND_WEBSOCKET } from "../constants";
 function ActiveDelivery() {
   const { user, token }                  = useAuth();
   const {tracking_code}                  = useParams();
-  const { agentParcel, agentAssignment } = useNotification();
+  const { agentParcel, agentAssignment,deliveryStatus } = useNotification();
   const navigate                         = useNavigate();
 
   const [agentLocation, setAgentLocation] = useState(null);
   const [wsReady, setWsReady]             = useState(false);
-
   const ws               = useRef(null);
   const agentLocationRef = useRef(null);
   const shouldConnect    = useRef(false);
@@ -29,10 +28,12 @@ function ActiveDelivery() {
   const receiverLng = agentParcel?.destination?.[1];
 
   //check valid tracking code from parameter
-  const match = agentAssignment.tracking_code === tracking_code;
-  if(!match){
-    navigate("/unauthorized");
-  }
+  const match = agentAssignment?.tracking_code === tracking_code;
+useEffect(() => {
+    if (!match && deliveryStatus !== "delivered") {
+        navigate("/unauthorized");
+    }
+}, [match, deliveryStatus,agentAssignment]);
 
   const connectWebSocket = useCallback(() => {
     if (ws.current &&
@@ -49,7 +50,6 @@ function ActiveDelivery() {
     ws.current = socket;
 
     socket.onopen  = () => { console.log("Delivery WS connected"); setWsReady(true); };
-    socket.onmessage = (event) => { console.log("Delivery WS:", JSON.parse(event.data)); };
     socket.onclose = (event) => {
       ws.current = null;
       setWsReady(false);
@@ -93,11 +93,11 @@ function ActiveDelivery() {
   //   return () => clearInterval(interval);
   // }, [user?.id]);
   useEffect(() => {
-  if (!user?.id) return;
+  if (!user?.id || !agentAssignment?.delivery_id) return; 
 
   const interval = setInterval(() => {
     const socket = ws.current;
-    const loc = agentLocation;
+    const loc = agentLocationRef.current;
 
     if (!socket || socket.readyState !== WebSocket.OPEN) return;
     if (!loc) return;
@@ -106,10 +106,10 @@ function ActiveDelivery() {
 
     socket.send(JSON.stringify({
       type:        "AGENT_LOCATION",
-      agent_id:    user.id,
+      agent_id:    user?.id,
       lat:         loc.lat,
       lng:         loc.lng,
-      timestamp:   loc.timestamp, // always fresh timestamp
+      timestamp:   Date.now(), // always fresh timestamp
       delivery_id: agentAssignment?.delivery_id,
     }));
 
@@ -143,7 +143,7 @@ function ActiveDelivery() {
         if (socket && socket.readyState === WebSocket.OPEN) {
           socket.send(JSON.stringify({
             type: "AGENT_LOCATION",
-            agent_id: user.id,
+            agent_id: user?.id,
             lat: loc.lat,
             lng: loc.lng,
             timestamp: Date.now(),

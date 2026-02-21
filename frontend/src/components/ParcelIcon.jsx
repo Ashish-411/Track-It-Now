@@ -22,15 +22,14 @@ function ParcelIcon({parcel}){
         return (
         <div className="parcelCard" onClick={handleClick}>
         {/* Parcel Icon */}
-        <div className="parcelIcon">
-            <PiPackageBold color="#152968"/>
-            <span className="parcelLabel">PARCEL</span>
+        <div>
+            <PiPackageBold color="#152968" size={40}/>
         </div>
 
         {/* Content */}
         <div className="parcelContent">
             <div className="parcelId">
-            {parcel.id}
+            #PKG-{String(parcel.id).padStart(4, '0')}
             <span className="statusBadge">
                 {parcel.current_status || 'Pending'}
             </span>

@@ -25,6 +25,17 @@
   width: 100%;        /* ← add this */
   align-self: stretch; /* ← add this */
 }
+.ah-hero-bg {
+  position: absolute;
+  bottom: -5;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.35;          
+  pointer-events: none;   
+  z-index: 0;             
+  border-radius: 0 0 22px 22px; 
+}
 
 @keyframes ah-fadeUp {
   from { opacity: 0; transform: translateY(14px); }
@@ -157,24 +168,24 @@
 }
 
 .go-online-btn {
-    background-color: #22c55e;
+    background-color: rgba(225, 101, 29, 0.944);
     color: white;
-    border: none;
+    border: transparent;
     padding: 16px 32px;
     font-size: 18px;
     font-weight: 600;
-    border-radius: 12px;
+    border-radius: 26px;
     cursor: pointer;
     transition: all 0.2s ease;
-    box-shadow: 0 4px 6px rgba(34, 197, 94, 0.2);
-    width: 100%;
+    width: 30%;
     max-width: 300px;
 }
 
 .go-online-btn:hover {
-    background-color: #16a34a;
+    border: 1px solid rgba(225, 101, 29, 0.944);
+    background-color: transparent;
+    color: rgb(14, 26, 65); /* ← match the orange */
     transform: translateY(-2px);
-    box-shadow: 0 6px 10px rgba(34, 197, 94, 0.3);
 }
 
 .go-online-btn:active {
@@ -200,44 +211,23 @@
     color: white;
 }
 
-/* Remove these old container styles */
-/*
-.agent-home-container {
-    width: 100vw;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.agent-app-container {
-    width: 100%;
-    max-width: 1000px;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background: linear-gradient(to bottom, #000080 50%, #ffffff 50%);
-    border: transparent;
-    border-radius: 20px;
-}
-
-.agent-main-content {
-    flex: 1;
-    background-color: transparent;
-}
-*/
-
 /* Responsive */
-@media (max-width: 480px) {
+@media (max-width: 600px) {
     .agent-content-wrapper {
         padding: 16px;
     }
     
     .go-online-btn {
+       width: 150px;
         padding: 14px 28px;
         font-size: 16px;
     }
-    
+    .go-online-btn:hover {
+    border: 1px solid rgba(225, 101, 29, 0.944);
+    background-color: transparent;
+    color: rgb(14, 26, 65); /* ← match the orange */
+    transform: translateY(-2px);
+}
     .btn-outline {
         padding: 10px 20px;
     }
