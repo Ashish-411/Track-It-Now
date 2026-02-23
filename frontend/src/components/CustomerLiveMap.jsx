@@ -2,6 +2,7 @@ import { Marker, TileLayer, MapContainer } from "react-leaflet";
 import { customerIcon, agentIcon } from "../utils/mapIcon";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { getRoute } from "../utils/Location";
 
 const receiverIcon = L.divIcon({
     className: "",
@@ -10,13 +11,47 @@ const receiverIcon = L.divIcon({
     iconAnchor: [16, 32],
 });
 
+function FitBounds({ points }) {
+    const map = useMap();
+    useEffect(() => {
+        const valid = points.filter(Boolean);
+        if (valid.length === 0) return;
+        if (valid.length === 1) { map.setView(valid[0], 15); return; }
+        map.fitBounds(L.latLngBounds(valid), { padding: [60, 60] });
+    }, [points.map(p => p?.join(",")).join("|")]);
+    return null;
+}
 function CustomerLiveMap({ senderLat, senderLng, receiverLat, receiverLng, agentLocation }) {
+    const [routePoints, setRoutePoints] = useState([]);
+
     const hasSender   = senderLat   != null && senderLng   != null;
     const hasReceiver = receiverLat != null && receiverLng != null;
+    // Customer always sees: agent → receiver (drop-off)
+    useEffect(() => {
+        if (!hasAgent || !hasReceiver) return;
+
+        getRoute(
+            { lat: agentLocation.lat, lng: agentLocation.lng },
+            { lat: receiverLat, lng: receiverLng }
+        ).then(result => {
+            if (result?.routePoints) setRoutePoints(result.routePoints);
+        });
+    }, [
+        agentLocation?.lat?.toFixed(3),
+        agentLocation?.lng?.toFixed(3),
+        receiverLat,
+        receiverLng,
+    ]);
 
     const center = hasSender   ? [senderLat, senderLng]
                  : hasReceiver ? [receiverLat, receiverLng]
                  : [27.7, 85.3];
+
+    const boundPoints = [
+        hasAgent    ? [agentLocation.lat, agentLocation.lng] : null,
+        hasReceiver ? [receiverLat, receiverLng]             : null,
+        // sender excluded — customer doesn't need to see pickup point in bounds
+    ];
 
     return (
         <MapContainer center={center} zoom={14} style={{ height: "100%", width: "100%" }}>
@@ -24,6 +59,13 @@ function CustomerLiveMap({ senderLat, senderLng, receiverLat, receiverLng, agent
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
           url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
             />
+            {/* Route: agent → receiver, always green */}
+            {routePoints.length > 0 && (
+                <Polyline
+                    positions={routePoints.map(p => [p.lat, p.lng])}
+                    pathOptions={{ color: "#00e599", weight: 5, opacity: 0.8 }}
+                />
+            )}
             {hasSender && (
                 <Marker position={[senderLat, senderLng]} icon={customerIcon} />
             )}
@@ -33,6 +75,8 @@ function CustomerLiveMap({ senderLat, senderLng, receiverLat, receiverLng, agent
             {agentLocation && (
                 <Marker position={[agentLocation.lat, agentLocation.lng]} icon={agentIcon} />
             )}
+            <FitBounds points={boundPoints} />
+
         </MapContainer>
     );
 }

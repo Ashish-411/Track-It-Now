@@ -93,26 +93,21 @@ export async function getPlaceName(lat, lng) {
 }
 export async function getRoute(source, destination, profile = "driving") {
   try {
+    if (!source?.lat || !source?.lng || !destination?.lat || !destination?.lng) return null;
+
     const url = `https://router.project-osrm.org/route/v1/${profile}/${source.lng},${source.lat};${destination.lng},${destination.lat}?overview=full&geometries=geojson`;
 
     const response = await fetch(url);
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch route");
-    }
+    if (!response.ok) throw new Error("Failed to fetch route");
 
     const data = await response.json();
-
-    if (!data.routes || data.routes.length === 0) {
-      throw new Error("No route found");
-    }
+    if (!data.routes?.length) throw new Error("No route found");
 
     const route = data.routes[0];
-
     return {
-      distance: route.distance, // in meters
-      duration: route.duration, // in seconds
-      routePoints: route.geometry.coordinates.map(([lng, lat]) => ({ lat, lng })), // array of {lat, lng}
+      distance: route.distance,
+      duration: route.duration,
+      routePoints: route.geometry.coordinates.map(([lng, lat]) => ({ lat, lng })),
     };
   } catch (error) {
     console.error("Route fetching error:", error);

@@ -3,6 +3,7 @@ import { agentIcon, customerIcon } from "../utils/mapIcon";
 import { useEffect } from "react";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import { getRoute } from "../utils/Location";
 
 const receiverIcon = L.divIcon({
   className: "",
@@ -23,9 +24,38 @@ function FitBounds({ points }) {
   return null;
 }
 
-function AgentLiveMap({ agentLocation, senderLat, senderLng, receiverLat, receiverLng }) {
+function AgentLiveMap({ agentLocation, senderLat, senderLng, receiverLat, receiverLng, deliveryStatus }) {
+  const [routePoints, setRoutePoints] = useState([]);
+
   const hasSender   = senderLat   != null && senderLng   != null;
   const hasReceiver = receiverLat != null && receiverLng != null;
+  const hasAgent    = agentLocation != null;
+
+
+  // Switch route based on delivery status
+  // - pending/default  → agent ➜ sender (pickup route)
+  // - picked_up+       → agent ➜ receiver (delivery route)
+  useEffect(() => {
+    if (!hasAgent) return;
+
+    const isPickedUp = deliveryStatus === "picked_up" || deliveryStatus === "in_transit";
+
+    const destination = isPickedUp
+      ? (hasReceiver ? { lat: receiverLat, lng: receiverLng } : null)
+      : (hasSender   ? { lat: senderLat,   lng: senderLng   } : null);
+
+    if (!destination) return;
+
+    getRoute(agentLocation, destination).then(result => {
+      if (result?.routePoints) setRoutePoints(result.routePoints);
+    });
+
+  }, [
+    // Re-fetch when agent moves significantly or status changes
+    agentLocation?.lat?.toFixed(3),
+    agentLocation?.lng?.toFixed(3),
+    deliveryStatus,
+  ]);
 
   const initialCenter = agentLocation
     ? [agentLocation.lat, agentLocation.lng]
@@ -39,12 +69,24 @@ function AgentLiveMap({ agentLocation, senderLat, senderLng, receiverLat, receiv
     hasReceiver   ? [receiverLat, receiverLng]             : null,
   ];
 
+  // Route line color: blue for pickup, green for delivery
+  const isPickedUp = deliveryStatus === "picked_up" || deliveryStatus === "in_transit";
+  const routeColor = isPickedUp ? "#00e599" : "#4f8aff";
+
   return (
     <MapContainer center={initialCenter} zoom={14} style={{ height: "100%", width: "100%" }}>
        <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
           url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
         />
+
+        {/* Route polyline */}
+      {routePoints.length > 0 && (
+        <Polyline
+          positions={routePoints.map(p => [p.lat, p.lng])}
+          pathOptions={{ color: routeColor, weight: 5, opacity: 0.8 }}
+        />
+      )}
       {agentLocation && (
         <Marker position={[agentLocation.lat, agentLocation.lng]} icon={agentIcon} />
       )}

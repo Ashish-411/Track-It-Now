@@ -213,6 +213,7 @@ useEffect(() => {
           senderLng={senderLng}
           receiverLat={receiverLat}
           receiverLng={receiverLng}
+          deliveryStatus = {deliveryStatus}
         />
       </div>
       {/* Delivery Controls */}
