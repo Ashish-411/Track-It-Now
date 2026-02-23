@@ -40,8 +40,8 @@ function CustomerLiveMap({ senderLat, senderLng, receiverLat, receiverLng, agent
             if (result?.routePoints) setRoutePoints(result.routePoints);
         });
     }, [
-        agentLocation?.lat?.toFixed(3),
-        agentLocation?.lng?.toFixed(3),
+        agentLocation?.lat,
+        agentLocation?.lng,
         receiverLat,
         receiverLng,
     ]);

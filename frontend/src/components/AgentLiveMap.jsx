@@ -63,16 +63,17 @@ function AgentLiveMap({ agentLocation, senderLat, senderLng, receiverLat, receiv
     : hasReceiver ? [receiverLat, receiverLng]
     : [27.7, 85.3];
 
-  const boundPoints = [
-    agentLocation ? [agentLocation.lat, agentLocation.lng] : null,
-    hasSender     ? [senderLat, senderLng]                 : null,
-    hasReceiver   ? [receiverLat, receiverLng]             : null,
+    
+    // Route line color: blue for pickup, green for delivery
+    const isPickedUp = deliveryStatus === "picked_up" || deliveryStatus === "in_transit";
+    const routeColor = isPickedUp ? "#00e599" : "#4f8aff";
+    
+    const boundPoints = [
+      hasAgent    ? [agentLocation.lat, agentLocation.lng] : null,
+      isPickedUp
+          ? (hasReceiver ? [receiverLat, receiverLng] : null)
+          : (hasSender   ? [senderLat, senderLng]     : null),
   ];
-
-  // Route line color: blue for pickup, green for delivery
-  const isPickedUp = deliveryStatus === "picked_up" || deliveryStatus === "in_transit";
-  const routeColor = isPickedUp ? "#00e599" : "#4f8aff";
-
   return (
     <MapContainer center={initialCenter} zoom={14} style={{ height: "100%", width: "100%" }}>
        <TileLayer
