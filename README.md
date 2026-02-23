@@ -1,0 +1,74 @@
+# 🚚 Track-It-Now – Real-Time Parcel Tracking System
+
+TrackItNow is a real-time parcel delivery and tracking system built using React, WebSockets, and OpenStreetMap.  
+It allows customers to send parcels and track delivery agents live on the map.
+
+---
+
+## 🌟 Features
+
+- 🔐 User Authentication (Customer & Agent)
+- 📦 Parcel Request & Acceptance System
+- 🗺️ Live Location Tracking using Leaflet + OSM
+- 🔔 Real-Time Notifications
+- 📍 Reverse Geocoding (Place name from lat/lng)
+- 📡 WebSocket-based Live Updates
+- 📱 Responsive UI
+
+---
+
+
+### Frontend Tech Stack
+- React
+- React Router
+- React-icons
+- React Leaflet
+- Axios
+- WebSocket
+---
+
+## 📸 Application Screenshots
+### 📍 Track It Now (Live Tracking)
+![Track It Now](images/TrackItNow.png)
+
+---
+
+### 👤 Customer Home Page
+![Customer Home](images/CustomerHome.webp)
+
+---
+### 📦 Customer Parcels Page
+![Parcels](images/Parcels.webp)
+
+---
+### 🧾Single Parcel Details
+![Single Parcel Details](images/SingleParcel.webp)
+
+---
+
+### 🔎 Agent Search
+![Agent Search](images/AgentSearch.webp)
+
+---
+
+### 🏠 Agent Home Page
+![Agent Home](images/AgentHome.webp)
+---
+
+##  How To Run The Project
+
+### 1️. Clone the Repository
+
+```bash
+git clone https://github.com/Ashish-411/Track-It-Now.git
+```
+
+---
+
+### 2️. Frontend Setup
+
+```bash
+cd Track-It-Now/frontend
+npm install
+npm run dev
+```
