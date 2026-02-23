@@ -1,4 +1,7 @@
-/* Register.css */
+/* ============================================================
+   Register.css — fully scoped to .register-page
+   ============================================================ */
+
 .register-page {
     background-color: #f5f7fa;
     display: flex;
@@ -6,171 +9,169 @@
     align-items: center;
     min-height: 100vh;
     padding: 20px;
-    margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-.register-page * {
-    margin: 0;
-    padding: 0;
+
+/* Scoped reset — only affects children of .register-page */
+.register-page *,
+.register-page *::before,
+.register-page *::after {
     box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+/* ── Container ── */
 .register-page .register-container {
     width: 100%;
-    max-width: 600px;
-    background-color: white;
+    max-width: 520px;
+    background-color: #ffffff;
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    overflow: hidden;
-    padding: 40px 30px;
-    /* Ensure container has proper height */
+    padding: 40px 36px;
     display: flex;
     flex-direction: column;
 }
-.register-page .register-form{
-    width: 500px;
+
+/* ── Form — NO fixed width ── */
+.register-page .register-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
+
+/* ── Title ── */
 .register-page .register-title {
     color: #2d3748;
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 28px;
     font-weight: 700;
     font-size: 28px;
-    flex-shrink: 0;
 }
 
-/* Tab Navigation Styles */
+/* ── Tab Navigation ── */
 .register-page .tab-navigation {
-    margin-bottom: 30px;
-    flex-shrink: 0;
+    margin-bottom: 28px;
 }
 
 .register-page .tabs-container {
     position: relative;
     display: flex;
-    background-color: #f8fafc;
-    border-radius: 8px;
+    flex-direction: row;
+    background-color: #f1f5f9;
+    border-radius: 10px;
     padding: 4px;
+    gap: 0;
 }
 
 .register-page .tab-btn {
     flex: 1;
-    padding: 14px;
+    padding: 13px 10px;
     border: none;
     background-color: transparent;
     color: #64748b;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 15px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+    border-radius: 7px;
     position: relative;
     z-index: 1;
-    border-radius: 6px;
+    white-space: nowrap;
 }
 
 .register-page .tab-btn:hover {
     color: #3b82f6;
-    background-color: rgba(59, 130, 246, 0.05);
+    background-color: rgba(59, 130, 246, 0.06);
 }
 
 .register-page .tab-btn.active {
     color: #3b82f6;
+    background-color: #ffffff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.10);
 }
 
-/* Tab Indicator */
+/* Hide old sliding indicator — replaced by background approach */
 .register-page .tab-indicator {
-    position: absolute;
-    bottom: 4px;
-    height: 3px;
-    background-color: #3b82f6;
-    border-radius: 2px;
-    transition: all 0.3s ease;
-    z-index: 0;
+    display: none;
 }
 
-/* Position the indicator based on active tab */
-.register-page .tab-indicator[data-active="customer"] {
-    left: 4px;
-    width: calc(50% - 8px);
-}
-
-.register-page .tab-indicator[data-active="agent"] {
-    left: calc(50% + 4px);
-    width: calc(50% - 8px);
-}
-
+/* ── Form Inputs ── */
 .register-page .form-group {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    margin-bottom: 30px;
-    flex-grow: 1;
+    gap: 16px;
+    margin-bottom: 24px;
 }
 
 .register-page .form-input {
-    padding: 16px 18px;
+    width: 100%;
+    padding: 15px 16px;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
-    font-size: 16px;
-    transition: all 0.3s;
+    font-size: 15px;
+    color: #2d3748;
     background-color: #f8fafc;
+    transition: border-color 0.25s, box-shadow 0.25s, background-color 0.25s;
 }
 
 .register-page .form-input:focus {
     outline: none;
     border-color: #3b82f6;
-    background-color: white;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
 }
 
 .register-page .form-input::placeholder {
     color: #94a3b8;
 }
 
+/* ── Actions ── */
 .register-page .form-actions {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    margin-bottom: 10px; /* Reduced from 20px since no terms notice */
-    flex-shrink: 0;
+    gap: 12px;
 }
 
 .register-page .btn-primary {
+    width: 100%;
     background-color: #3b82f6;
-    color: white;
+    color: #ffffff;
     border: none;
     border-radius: 8px;
-    padding: 16px;
-    font-size: 18px;
+    padding: 15px;
+    font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.25s, transform 0.15s;
 }
 
 .register-page .btn-primary:hover {
     background-color: #2563eb;
+    transform: translateY(-1px);
 }
-/* Style for NavLink wrapper */
+
+.register-page .btn-primary:active {
+    transform: translateY(0);
+}
+
 .register-page .nav-link-login {
     display: block;
     text-decoration: none;
     width: 100%;
 }
 
-/* Ensure the button inside NavLink takes full width */
-.register-page .nav-link-login .btn-secondary {
+.register-page .btn-secondary {
     width: 100%;
     display: block;
-}
-.register-page .btn-secondary {
     background-color: transparent;
     color: #64748b;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
-    padding: 16px;
-    font-size: 16px;
+    padding: 15px;
+    font-size: 15px;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: background-color 0.25s, border-color 0.25s;
+    text-align: center;
 }
 
 .register-page .btn-secondary:hover {
@@ -183,22 +184,83 @@
     font-weight: 600;
 }
 
-/* Responsive adjustments */
-@media (max-width: 600px) {
-    .register-page .register-container {
-        padding: 30px 20px;
+/* ============================================================
+   MOBILE  (≤ 480px)
+   ============================================================ */
+@media (max-width: 480px) {
+    .register-page {
+        padding: 16px;
+        align-items: flex-start;
+        padding-top: 32px;
     }
-    
+
+    .register-page .register-container {
+        padding: 28px 20px;
+        border-radius: 14px;
+        max-width: 100%;
+    }
+
+    .register-page .register-title {
+        font-size: 22px;
+        margin-bottom: 22px;
+    }
+
+    /* Stack tabs vertically on mobile */
+    .register-page .tabs-container {
+        flex-direction: column;
+        background-color: transparent;
+        padding: 0;
+        gap: 8px;
+    }
+
+    .register-page .tab-btn {
+        width: 100%;
+        text-align: left;
+        padding: 14px 16px;
+        border-radius: 8px;
+        background-color: #f1f5f9;
+        font-size: 14px;
+        white-space: normal;
+        box-shadow: none;
+    }
+
+    .register-page .tab-btn.active {
+        background-color: #dbeafe;
+        color: #1d4ed8;
+        box-shadow: none;
+    }
+
+    .register-page .tab-btn:hover {
+        background-color: #e2e8f0;
+    }
+
+    /* Prevent iOS zoom on input focus */
+    .register-page .form-input {
+        font-size: 16px;
+        padding: 14px;
+    }
+
+    .register-page .btn-primary,
+    .register-page .btn-secondary {
+        padding: 14px;
+        font-size: 15px;
+    }
+}
+
+/* ============================================================
+   SMALL TABLETS  (481px – 600px)
+   ============================================================ */
+@media (min-width: 481px) and (max-width: 600px) {
+    .register-page .register-container {
+        padding: 32px 24px;
+    }
+
     .register-page .register-title {
         font-size: 24px;
     }
-    
+
     .register-page .tab-btn {
-        padding: 12px 8px;
         font-size: 14px;
-    }
-    
-    .register-page .form-input {
-        padding: 14px 16px;
+        padding: 12px 8px;
     }
 }
