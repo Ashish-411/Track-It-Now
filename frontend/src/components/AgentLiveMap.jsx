@@ -66,7 +66,7 @@ function AgentLiveMap({ agentLocation, senderLat, senderLng, receiverLat, receiv
     
     // Route line color: blue for pickup, green for delivery
     const isPickedUp = deliveryStatus === "picked_up" || deliveryStatus === "in_transit";
-    const routeColor = isPickedUp ? "#00e599" : "#4f8aff";
+    const routeColor = isPickedUp ? "#1a1a1a;" : "#1a1a1a;";
     
     const boundPoints = [
       hasAgent    ? [agentLocation.lat, agentLocation.lng] : null,

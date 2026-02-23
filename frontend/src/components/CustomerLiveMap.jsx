@@ -67,7 +67,7 @@ function CustomerLiveMap({ senderLat, senderLng, receiverLat, receiverLng, agent
             {routePoints.length > 0 && (
                 <Polyline
                     positions={routePoints.map(p => [p.lat, p.lng])}
-                    pathOptions={{ color: "#00e599", weight: 5, opacity: 0.8 }}
+                    pathOptions={{ color: "#1a1a1a;", weight: 5, opacity: 0.8 }}
                 />
             )}
             {hasSender && (
