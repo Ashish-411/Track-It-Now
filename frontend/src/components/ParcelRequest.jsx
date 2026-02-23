@@ -8,10 +8,14 @@ function ParcelRequest({ notification }) {
     const { removeNotification } = useNotification();
   // Format the current time
     const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    async function handleAccept() {
+    async function handleAccept(e) {
+        e.stopPropagation();
+
         if (!notification) {
             return;
         }
+        e.currentTarget.disabled = true;
+
         try {
             const location = await getUserLocation();
             console.log(location);
@@ -23,6 +27,8 @@ function ParcelRequest({ notification }) {
             removeNotification(notification.request_id);
         } catch (err) {
             console.error("Error accepting request:", err.message);
+            e.currentTarget.disabled = false; 
+
         }
     }
 
