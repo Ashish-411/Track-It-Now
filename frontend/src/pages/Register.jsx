@@ -1,13 +1,15 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "../styles/Register.css";
 import api from "../api";
+
 
 function Register() {
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [activeTab, setActiveTab] = useState("customer"); // Track active tab
+    const navigate = useNavigate();
     
     const handleTabClick = (tab) => {
         setActiveTab(tab);
@@ -28,6 +30,7 @@ function Register() {
             setName("");
             setPassword("");
             setEmail("");
+            navigate("/login");
         }catch(err){
             console.log(err);
         }

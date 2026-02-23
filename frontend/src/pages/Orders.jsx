@@ -31,7 +31,7 @@ function Orders() {
       try {
         setLoading(true);
         const res = await api.get("/api/parcel/parcels?to_receive=true");
-        const data = res.data;
+        const data = Array.isArray(res.data) ? res.data : [];
         console.log("Orders",data);
         // Resolve place names for each parcel's coordinates in parallel
         const enriched = await Promise.all(
