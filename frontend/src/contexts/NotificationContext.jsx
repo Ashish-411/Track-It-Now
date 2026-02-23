@@ -3,7 +3,7 @@ import { useAuth } from "./AuthContext";
 import { useCallback } from 'react';
 import { deduplicateDeliveries } from "../utils/deliveryUtils";
 import api from "../api";
-import { BACKEND_WEBSOCKET } from "../constants";
+import { WS_URL } from "../constants";
 const NotificationContext = createContext();
 
 export const useNotification = () => useContext(NotificationContext);
@@ -184,11 +184,8 @@ useEffect(() => {
     if (socketRef.current) return;
 
     socketRef.current = new WebSocket(
-      `ws://localhost:8000/api/parcel/receive_notification/${user.id}?token=${token}`
+      `${WS_URL}/api/parcel/receive_notification/${user.id}?token=${token}`
     );
-    // socketRef.current = new WebSocket(
-    //   `${BACKEND_WEBSOCKET}/api/parcel/receive_notification/${user.id}?token=${token}`
-    // );
     socketRef.current.onopen=() =>{
       console.log("Notification WebSocket Connected");
     }

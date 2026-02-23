@@ -1,8 +1,8 @@
 import axios from "axios";
-import { ACCESS_TOKEN, BACKEND } from "./constants";
+import { ACCESS_TOKEN, BACKEND_URL } from "./constants";
 
 const api = axios.create({
-    baseURL: "http://localhost:8000",
+    baseURL: BACKEND_URL,
     // baseURL: `${BACKEND}`,
     withCredentials: true,
 });

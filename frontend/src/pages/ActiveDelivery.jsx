@@ -6,7 +6,7 @@ import { useNotification } from "../contexts/NotificationContext";
 import { useAuth } from "../contexts/AuthContext";
 import AgentLiveMap from "../components/AgentLiveMap";
 import DeliveryControls from "../components/DeliveryControls";
-import { BACKEND_WEBSOCKET } from "../constants";
+import { WS_URL } from "../constants";
 
 function ActiveDelivery() {
   const { user, token }                  = useAuth();
@@ -42,11 +42,9 @@ useEffect(() => {
     if (!user?.id || !token || !agentAssignment?.tracking_code) return;
 
     const socket = new WebSocket(
-      `ws://localhost:8000/api/track/live-share/${user.id}/${agentAssignment.tracking_code}?token=${token}`
+      `${WS_URL}/api/track/live-share/${user.id}/${agentAssignment.tracking_code}?token=${token}`
     );
-    // const socket = new WebSocket(
-    //   `${BACKEND_WEBSOCKET}/api/track/live-share/${user.id}/${agentAssignment.tracking_code}?token=${token}`
-    // );
+    
     ws.current = socket;
 
     socket.onopen  = () => { console.log("Delivery WS connected"); setWsReady(true); };

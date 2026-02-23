@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useNotification } from "../contexts/NotificationContext";
 import api from "../api";
 import "leaflet/dist/leaflet.css";
-import { BACKEND_WEBSOCKET } from "../constants";
+import { WS_URL } from "../constants";
 
 function RecenterMap({ location }) {
   const map = useMap();
@@ -50,7 +50,7 @@ function CustomerMap({ parcelId}) {
 
     console.log("CustomerMap: connecting WebSocket…");
     const ws = new WebSocket(
-      `ws://localhost:8000/api/agent/search-agents/${user.id}` +
+      `${WS_URL}/api/agent/search-agents/${user.id}` +
       `?lat=${customerLocation.lat}&lng=${customerLocation.lng}&token=${token}`
     );
     // const ws = new WebSocket(

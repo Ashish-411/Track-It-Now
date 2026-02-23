@@ -5,7 +5,7 @@ import { useNotification } from "../contexts/NotificationContext";
 import { useLocation } from "react-router-dom";
 import CustomerLiveMap from "../components/CustomerLiveMap";
 import api from "../api";
-import { BACKEND_WEBSOCKET } from "../constants";
+import { WS_URL } from "../constants";
 import { getPlaceName } from "../utils/Location";
 
 function CustomerLiveTrack() {
@@ -58,10 +58,9 @@ function CustomerLiveTrack() {
                 if (!user?.id || !token || !tracking_code) return;
                 
                 const socket = new WebSocket(
-                    `ws://localhost:8000/api/track/${user.id}/${tracking_code}?token=${token}`
+                    `${WS_URL}/api/track/${user.id}/${tracking_code}?token=${token}`
                 );
-        //         const socket = new WebSocket(
-        //             `${BACKEND_WEBSOCKET}/api/track/${user.id}/${tracking_code}?token=${token}`
+        //         
         // );
         ws.current = socket;
         socket.onopen = () => console.log("Customer tracking WS connected");

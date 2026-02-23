@@ -4,7 +4,7 @@ import AgentMap from "../components/AgentMap";
 import { useLocation, useNavigate } from "react-router-dom";
 import { IoMdClose } from "react-icons/io";
 import { useNotification } from "../contexts/NotificationContext";
-
+import { WS_URL } from "../constants";
 function AgentLiveTrack() {
   const { user, token } = useAuth();
   const {agentAssignment} = useNotification();
@@ -50,7 +50,7 @@ function AgentLiveTrack() {
 
     console.log("Connecting WebSocket…");
     const socket = new WebSocket(
-      `ws://localhost:8000/api/agent/go-online/${user.id}?token=${token}`
+      `${WS_URL}/api/agent/go-online/${user.id}?token=${token}`
     );
     ws.current = socket;
 
