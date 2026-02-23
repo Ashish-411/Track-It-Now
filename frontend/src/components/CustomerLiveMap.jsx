@@ -1,8 +1,9 @@
-import { Marker, TileLayer, MapContainer } from "react-leaflet";
+import { Marker, TileLayer, MapContainer , Polyline, useMap} from "react-leaflet";
 import { customerIcon, agentIcon } from "../utils/mapIcon";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { getRoute } from "../utils/Location";
+import { useState, useEffect } from "react";
 
 const receiverIcon = L.divIcon({
     className: "",
@@ -26,8 +27,10 @@ function CustomerLiveMap({ senderLat, senderLng, receiverLat, receiverLng, agent
 
     const hasSender   = senderLat   != null && senderLng   != null;
     const hasReceiver = receiverLat != null && receiverLng != null;
+    const hasAgent = agentLocation != null;  
     // Customer always sees: agent → receiver (drop-off)
     useEffect(() => {
+
         if (!hasAgent || !hasReceiver) return;
 
         getRoute(
@@ -43,7 +46,8 @@ function CustomerLiveMap({ senderLat, senderLng, receiverLat, receiverLng, agent
         receiverLng,
     ]);
 
-    const center = hasSender   ? [senderLat, senderLng]
+    const center =  hasAgent    ? [agentLocation.lat, agentLocation.lng]
+                 :  hasSender   ? [senderLat, senderLng]
                  : hasReceiver ? [receiverLat, receiverLng]
                  : [27.7, 85.3];
 
